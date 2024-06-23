@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="//cdn.staticfile.net/Primer/21.0.7/primer.css" rel="stylesheet" />
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/126044735?v=4"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="### JSP Model2
+
+JSP Model2 是一种基于 JSP 技术的 MVC 思想，它将应用程序分为模型（Model）、视图（View）和控制器（Controller）三个部分，以实现代码的分离和更好的可维护性。">
+<meta property="og:title" content="java中的MVC">
+<meta property="og:description" content="### JSP Model2
+
+JSP Model2 是一种基于 JSP 技术的 MVC 思想，它将应用程序分为模型（Model）、视图（View）和控制器（Controller）三个部分，以实现代码的分离和更好的可维护性。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://leyuan123.github.io/post/java-zhong-de-MVC.html">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/126044735?v=4">
+<title>java中的MVC</title>
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+</style>
+
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">java中的MVC</h1>
+<div class="title-right">
+    <a href="https://leyuan123.github.io" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/leyuan123/leyuan123.github.io/issues/4" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><h3>JSP Model2</h3>
+<p>JSP Model2 是一种基于 JSP 技术的 MVC 思想，它将应用程序分为模型（Model）、视图（View）和控制器（Controller）三个部分，以实现代码的分离和更好的可维护性。下面是一个简单的用户注册功能的示例，展示了如何使用 JSP Model2 思想实现：</p>
+<ol>
+<li>创建模型（Model）：<br>
+在这个示例中，我们将用户信息封装为一个 JavaBean 类，用于表示用户对象的属性和方法。这个 JavaBean 类可以存储用户的注册信息，例如用户名、密码、邮箱等。</li>
+</ol>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">User</span> {
+    <span class="pl-k">private</span> <span class="pl-smi">String</span> <span class="pl-s1">username</span>;
+    <span class="pl-k">private</span> <span class="pl-smi">String</span> <span class="pl-s1">password</span>;
+    <span class="pl-k">private</span> <span class="pl-smi">String</span> <span class="pl-s1">email</span>;
+
+    <span class="pl-c">// 省略 getter 和 setter 方法</span>
+}</pre></div>
+<ol start="2">
+<li>创建视图（View）：<br>
+在 JSP 页面中定义用户注册表单，用户输入用户名、密码、邮箱等信息并提交表单进行注册操作。</li>
+</ol>
+<div class="highlight highlight-text-html-jsp"><pre class="notranslate">&lt;<span class="pl-ent">form</span> <span class="pl-e">action</span>=<span class="pl-s"><span class="pl-pds">"</span>RegisterController<span class="pl-pds">"</span></span> <span class="pl-e">method</span>=<span class="pl-s"><span class="pl-pds">"</span>post<span class="pl-pds">"</span></span>&gt;
+    Username: &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>username<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">br</span>&gt;
+    Password: &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>password<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>password<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">br</span>&gt;
+    Email: &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>email<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">br</span>&gt;
+    &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>submit<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">"</span>Register<span class="pl-pds">"</span></span>&gt;
+&lt;/<span class="pl-ent">form</span>&gt;</pre></div>
+<ol start="3">
+<li>创建控制器（Controller）：<br>
+在控制器中处理用户注册操作，接收用户输入的信息，将信息封装成 User 对象并存储到数据库中。</li>
+</ol>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">WebServlet</span>(<span class="pl-s">"/RegisterController"</span>)
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">RegisterController</span> <span class="pl-k">extends</span> <span class="pl-smi">HttpServlet</span> {
+    <span class="pl-k">protected</span> <span class="pl-smi">void</span> <span class="pl-en">doPost</span>(<span class="pl-smi">HttpServletRequest</span> <span class="pl-s1">request</span>, <span class="pl-smi">HttpServletResponse</span> <span class="pl-s1">response</span>) <span class="pl-k">throws</span> <span class="pl-smi">ServletException</span>, <span class="pl-smi">IOException</span> {
+        <span class="pl-smi">String</span> <span class="pl-s1">username</span> = <span class="pl-s1">request</span>.<span class="pl-en">getParameter</span>(<span class="pl-s">"username"</span>);
+        <span class="pl-smi">String</span> <span class="pl-s1">password</span> = <span class="pl-s1">request</span>.<span class="pl-en">getParameter</span>(<span class="pl-s">"password"</span>);
+        <span class="pl-smi">String</span> <span class="pl-s1">email</span> = <span class="pl-s1">request</span>.<span class="pl-en">getParameter</span>(<span class="pl-s">"email"</span>);
+
+        <span class="pl-smi">User</span> <span class="pl-s1">user</span> = <span class="pl-k">new</span> <span class="pl-smi">User</span>();
+        <span class="pl-s1">user</span>.<span class="pl-en">setUsername</span>(<span class="pl-s1">username</span>);
+        <span class="pl-s1">user</span>.<span class="pl-en">setPassword</span>(<span class="pl-s1">password</span>);
+        <span class="pl-s1">user</span>.<span class="pl-en">setEmail</span>(<span class="pl-s1">email</span>);
+
+        <span class="pl-c">// 将用户信息存储到数据库中</span>
+
+        <span class="pl-c">// 跳转到注册成功页面</span>
+        <span class="pl-s1">request</span>.<span class="pl-en">getRequestDispatcher</span>(<span class="pl-s">"registerSuccess.jsp"</span>).<span class="pl-en">forward</span>(<span class="pl-s1">request</span>, <span class="pl-s1">response</span>);
+    }
+}</pre></div>
+<p>在这个示例中，用户输入的信息由视图（View）的 JSP 页面提交给控制器（Controller）的 Servlet 类进行处理。控制器将用户信息封装成 User 对象并存储到数据库中，然后将请求转发到注册成功页面。这里实现了模型（Model）、视图（View）和控制器（Controller）的分离，符合 JSP Model2 的思想。</p>
+<h3>基于springMVC</h3>
+<p>当使用 Spring MVC 实现用户注册功能时，可以通过以下步骤体现 JSP Model2 的思想：</p>
+<ol>
+<li>创建模型（Model）：<br>
+与之前相似，创建一个用户注册信息的 JavaBean 类，代表用户的属性和方法，用于存储用户的注册信息。</li>
+</ol>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">User</span> {
+    <span class="pl-k">private</span> <span class="pl-smi">String</span> <span class="pl-s1">username</span>;
+    <span class="pl-k">private</span> <span class="pl-smi">String</span> <span class="pl-s1">password</span>;
+    <span class="pl-k">private</span> <span class="pl-smi">String</span> <span class="pl-s1">email</span>;
+
+    <span class="pl-c">// 省略 getter 和 setter 方法</span>
+}</pre></div>
+<ol start="2">
+<li>创建视图（View）：<br>
+在视图中定义用户注册表单，用户输入用户名、密码、邮箱等信息并提交表单进行注册操作。这里使用 Spring 的 form 标签库来生成表单。</li>
+</ol>
+<div class="highlight highlight-text-html-jsp"><pre class="notranslate">&lt;%@ <span class="pl-k">taglib</span> <span class="pl-e">prefix</span>=<span class="pl-s"><span class="pl-pds">"</span>form<span class="pl-pds">"</span></span> <span class="pl-e">uri</span>=<span class="pl-s"><span class="pl-pds">"</span>http://www.springframework.org/tags/form<span class="pl-pds">"</span></span> %&gt;
+&lt;<span class="pl-ent">form:form</span> <span class="pl-e">method</span>=<span class="pl-s"><span class="pl-pds">"</span>post<span class="pl-pds">"</span></span> <span class="pl-e">action</span>=<span class="pl-s"><span class="pl-pds">"</span>register<span class="pl-pds">"</span></span>&gt;
+    Username: &lt;<span class="pl-ent">form:input</span> <span class="pl-e">path</span>=<span class="pl-s"><span class="pl-pds">"</span>username<span class="pl-pds">"</span></span> /&gt;&lt;<span class="pl-ent">br</span>&gt;
+    Password: &lt;<span class="pl-ent">form:password</span> <span class="pl-e">path</span>=<span class="pl-s"><span class="pl-pds">"</span>password<span class="pl-pds">"</span></span> /&gt;&lt;<span class="pl-ent">br</span>&gt;
+    Email: &lt;<span class="pl-ent">form:input</span> <span class="pl-e">path</span>=<span class="pl-s"><span class="pl-pds">"</span>email<span class="pl-pds">"</span></span> /&gt;&lt;<span class="pl-ent">br</span>&gt;
+    &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>submit<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">"</span>Register<span class="pl-pds">"</span></span>&gt;
+&lt;/<span class="pl-ent">form:form</span>&gt;</pre></div>
+<ol start="3">
+<li>创建控制器（Controller）：<br>
+使用 Spring MVC 控制器来处理用户注册操作，接收用户输入的信息，将信息封装成 User 对象并存储到数据库中。</li>
+</ol>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">Controller</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">RegisterController</span> {
+    <span class="pl-c1">@</span><span class="pl-c1">Autowired</span>
+    <span class="pl-k">private</span> <span class="pl-smi">UserService</span> <span class="pl-s1">userService</span>;
+
+    <span class="pl-c1">@</span><span class="pl-c1">RequestMapping</span>(<span class="pl-s1">value</span> = <span class="pl-s">"/register"</span>, <span class="pl-s1">method</span> = <span class="pl-smi">RequestMethod</span>.<span class="pl-c1">POST</span>)
+    <span class="pl-k">public</span> <span class="pl-smi">String</span> <span class="pl-en">registerUser</span>(<span class="pl-c1">@</span><span class="pl-c1">ModelAttribute</span>(<span class="pl-s">"user"</span>) <span class="pl-smi">User</span> <span class="pl-s1">user</span>) {
+        <span class="pl-s1">userService</span>.<span class="pl-en">registerUser</span>(<span class="pl-s1">user</span>); <span class="pl-c">// 调用业务逻辑来保存用户信息</span>
+        <span class="pl-k">return</span> <span class="pl-s">"registerSuccess"</span>; <span class="pl-c">// 返回注册成功页面</span>
+    }
+}</pre></div>
+<p>在这个示例中，用户输入的信息由视图提交给控制器的 Spring MVC 控制器类进行处理。控制器将用户信息封装成 User 对象并存储到数据库中，然后返回到注册成功页面。这里同样体现了模型（Model）、视图（View）和控制器（Controller）的分离，符合 JSP Model2 的思想，并且使用了 Spring MVC 提供的注解和依赖注入功能来简化代码和提高灵活性。</p>
+<h3>springMVC提供了什么</h3>
+<p>Spring MVC 是 Spring Framework 中的一个模块，用于构建基于 Java 的 Web 应用程序。它提供了一组功能和特性，使开发者能够轻松地构建灵活、松耦合、可扩展的 Web 应用程序。以下是 Spring MVC 提供的一些主要功能和特点：</p>
+<ol>
+<li>
+<p><strong>注解驱动</strong>：<br>
+Spring MVC 提供了丰富的注解，如 <code class="notranslate">@Controller</code>、<code class="notranslate">@RequestMapping</code>、<code class="notranslate">@RequestParam</code> 等，简化了控制器的编写和映射处理。</p>
+</li>
+<li>
+<p><strong>模型-视图-控制器（MVC）架构</strong>：<br>
+Spring MVC 遵循经典的模型-视图-控制器设计模式，将应用程序分为模型（Model，业务逻辑代码）、视图（View，展示页面）和控制器（Controller，请求处理器），实现了业务逻辑和展示逻辑的分离。</p>
+</li>
+<li>
+<p><strong>灵活的视图解析</strong>：<br>
+Spring MVC 提供了多种视图解析策略，支持 JSP、Thymeleaf、FreeMarker、Velocity 等多种模板引擎，使开发者可以根据需求选择合适的视图技术。</p>
+</li>
+<li>
+<p><strong>数据绑定</strong>：<br>
+Spring MVC 提供了数据绑定功能，可以将 HTTP 请求参数自动绑定到控制器方法的参数、表单对象或命令对象上，简化了参数处理和数据验证的过程。</p>
+</li>
+<li>
+<p><strong>表单标签支持</strong>：<br>
+Spring MVC 提供了 form 标签库，通过使用 form 标签库中的标签来构建表单，简化了表单的开发和处理。</p>
+</li>
+<li>
+<p><strong>国际化支持</strong>：<br>
+Spring MVC 支持国际化和本地化，能够方便地实现多语言和多地区的 Web 应用程序，提高了应用的用户体验。</p>
+</li>
+<li>
+<p><strong>拦截器</strong>：<br>
+Spring MVC 提供了拦截器（Interceptor）功能，可以在请求处理的各个阶段进行预处理和后处理，实现日志记录、权限验证、异常处理等功能。</p>
+</li>
+<li>
+<p><strong>数据验证</strong>：<br>
+Spring MVC 集成了数据验证框架，可以方便地对表单数据进行验证，提高了数据的完整性和安全性。</p>
+</li>
+<li>
+<p><strong>RESTful 风格支持</strong>：<br>
+Spring MVC 支持构建 RESTful 风格的 Web 服务，通过 <code class="notranslate">@RequestMapping</code> 注解的 <code class="notranslate">method</code> 属性和 <code class="notranslate">produces</code> 属性进行请求方法和响应内容类型的匹配。</p>
+</li>
+</ol>
+<p>总的来说，Spring MVC 简化了 Web 应用程序的开发过程，提高了代码的可读性和可维护性，同时支持强大的扩展性，可以满足各种 Web 应用程序的需求。</p>
+<h3>例子</h3>
+<p>好的，让我为您提供每个功能点的代码示例：</p>
+<ol>
+<li><strong>注解驱动</strong>：</li>
+</ol>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">Controller</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">MyController</span> {
+
+    <span class="pl-c1">@</span><span class="pl-c1">RequestMapping</span>(<span class="pl-s">"/hello"</span>)
+    <span class="pl-k">public</span> <span class="pl-smi">String</span> <span class="pl-en">sayHello</span>() {
+        <span class="pl-k">return</span> <span class="pl-s">"hello"</span>;
+    }
+}</pre></div>
+<ol start="2">
+<li><strong>模型-视图-控制器（MVC）架构</strong>：</li>
+</ol>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">Controller</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">UserController</span> {
+
+    <span class="pl-c1">@</span><span class="pl-c1">Autowired</span>
+    <span class="pl-k">private</span> <span class="pl-smi">UserService</span> <span class="pl-s1">userService</span>;
+
+    <span class="pl-c1">@</span><span class="pl-c1">RequestMapping</span>(<span class="pl-s">"/user/{id}"</span>)
+    <span class="pl-k">public</span> <span class="pl-smi">String</span> <span class="pl-en">getUserDetail</span>(<span class="pl-c1">@</span><span class="pl-c1">PathVariable</span>(<span class="pl-s">"id"</span>) <span class="pl-smi">Long</span> <span class="pl-s1">id</span>, <span class="pl-smi">Model</span> <span class="pl-s1">model</span>) {
+        <span class="pl-smi">User</span> <span class="pl-s1">user</span> = <span class="pl-s1">userService</span>.<span class="pl-en">getUserById</span>(<span class="pl-s1">id</span>);<span class="pl-c">//模型</span>
+        <span class="pl-s1">model</span>.<span class="pl-en">addAttribute</span>(<span class="pl-s">"user"</span>, <span class="pl-s1">user</span>);
+        <span class="pl-k">return</span> <span class="pl-s">"userDetail"</span>;<span class="pl-c">//视图</span>
+    }
+}</pre></div>
+<ol start="3">
+<li><strong>灵活的视图解析</strong>：</li>
+</ol>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">Configuration</span>
+<span class="pl-c1">@</span><span class="pl-c1">EnableWebMvc</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">MvcConfig</span> <span class="pl-k">implements</span> <span class="pl-smi">WebMvcConfigurer</span> {
+
+    <span class="pl-c1">@</span><span class="pl-c1">Override</span>
+    <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">configureViewResolvers</span>(<span class="pl-smi">ViewResolverRegistry</span> <span class="pl-s1">registry</span>) {
+        <span class="pl-s1">registry</span>.<span class="pl-en">jsp</span>(<span class="pl-s">"/WEB-INF/views/"</span>, <span class="pl-s">".jsp"</span>);
+    }
+}</pre></div>
+<ol start="4">
+<li><strong>数据绑定</strong>：</li>
+</ol>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">Controller</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">UserController</span> {
+
+    <span class="pl-c1">@</span><span class="pl-c1">RequestMapping</span>(<span class="pl-s">"/user"</span>)
+    <span class="pl-k">public</span> <span class="pl-smi">String</span> <span class="pl-en">addUser</span>(<span class="pl-c1">@</span><span class="pl-c1">ModelAttribute</span>(<span class="pl-s">"user"</span>) <span class="pl-smi">User</span> <span class="pl-s1">user</span>) {
+        <span class="pl-s1">userService</span>.<span class="pl-en">addUser</span>(<span class="pl-s1">user</span>);
+        <span class="pl-k">return</span> <span class="pl-s">"redirect:/user/list"</span>;
+    }
+}</pre></div>
+<ol start="5">
+<li><strong>表单标签支持</strong>：</li>
+</ol>
+<div class="highlight highlight-text-html-jsp"><pre class="notranslate">&lt;<span class="pl-ent">form:form</span> <span class="pl-e">modelAttribute</span>=<span class="pl-s"><span class="pl-pds">"</span>user<span class="pl-pds">"</span></span> <span class="pl-e">method</span>=<span class="pl-s"><span class="pl-pds">"</span>post<span class="pl-pds">"</span></span> <span class="pl-e">action</span>=<span class="pl-s"><span class="pl-pds">"</span>/user<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">form:input</span> <span class="pl-e">path</span>=<span class="pl-s"><span class="pl-pds">"</span>username<span class="pl-pds">"</span></span> /&gt;
+    &lt;<span class="pl-ent">form:input</span> <span class="pl-e">path</span>=<span class="pl-s"><span class="pl-pds">"</span>email<span class="pl-pds">"</span></span> /&gt;
+    &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>submit<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">"</span>Submit<span class="pl-pds">"</span></span> /&gt;
+&lt;/<span class="pl-ent">form:form</span>&gt;</pre></div>
+<ol start="6">
+<li><strong>国际化支持</strong>：</li>
+</ol>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">Configuration</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">MvcConfig</span> <span class="pl-k">implements</span> <span class="pl-smi">WebMvcConfigurer</span> {
+
+    <span class="pl-c1">@</span><span class="pl-c1">Bean</span>
+    <span class="pl-k">public</span> <span class="pl-smi">ResourceBundleMessageSource</span> <span class="pl-en">messageSource</span>() {
+        <span class="pl-smi">ResourceBundleMessageSource</span> <span class="pl-s1">messageSource</span> = <span class="pl-k">new</span> <span class="pl-smi">ResourceBundleMessageSource</span>();
+        <span class="pl-s1">messageSource</span>.<span class="pl-en">setBasename</span>(<span class="pl-s">"messages"</span>);
+        <span class="pl-k">return</span> <span class="pl-s1">messageSource</span>;
+    }
+}</pre></div>
+<ol start="7">
+<li><strong>拦截器</strong>：</li>
+</ol>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">Component</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">AccessLogInterceptor</span> <span class="pl-k">implements</span> <span class="pl-smi">HandlerInterceptor</span> {
+
+    <span class="pl-c1">@</span><span class="pl-c1">Override</span>
+    <span class="pl-k">public</span> <span class="pl-smi">boolean</span> <span class="pl-en">preHandle</span>(<span class="pl-smi">HttpServletRequest</span> <span class="pl-s1">request</span>, <span class="pl-smi">HttpServletResponse</span> <span class="pl-s1">response</span>, <span class="pl-smi">Object</span> <span class="pl-s1">handler</span>) <span class="pl-k">throws</span> <span class="pl-smi">Exception</span> {
+        <span class="pl-c">// Intercept pre-processing logic</span>
+        <span class="pl-k">return</span> <span class="pl-c1">true</span>;
+    }
+}</pre></div>
+<ol start="8">
+<li><strong>数据验证</strong>：</li>
+</ol>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">PostMapping</span>(<span class="pl-s">"/user"</span>)
+<span class="pl-k">public</span> <span class="pl-smi">String</span> <span class="pl-s1">addUser</span>(<span class="pl-c1">@</span><span class="pl-c1">Valid</span> <span class="pl-c1">@</span><span class="pl-c1">ModelAttribute</span>(<span class="pl-s">"user"</span>) <span class="pl-smi">User</span> <span class="pl-s1">user</span>, <span class="pl-smi">BindingResult</span> <span class="pl-s1">result</span>) {
+    <span class="pl-k">if</span> (<span class="pl-s1">result</span>.<span class="pl-en">hasErrors</span>()) {
+        <span class="pl-k">return</span> <span class="pl-s">"userForm"</span>;
+    } <span class="pl-k">else</span> {
+        <span class="pl-s1">userService</span>.<span class="pl-en">addUser</span>(<span class="pl-s1">user</span>);
+        <span class="pl-k">return</span> <span class="pl-s">"redirect:/user/list"</span>;
+    }
+}</pre></div>
+<ol start="9">
+<li><strong>RESTful 风格支持</strong>：</li>
+</ol>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">RestController</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">UserController</span> {
+
+    <span class="pl-c1">@</span><span class="pl-c1">GetMapping</span>(<span class="pl-s">"/users/{id}"</span>)
+    <span class="pl-k">public</span> <span class="pl-smi">ResponseEntity</span>&lt;<span class="pl-smi">User</span>&gt; <span class="pl-en">getUser</span>(<span class="pl-c1">@</span><span class="pl-c1">PathVariable</span> <span class="pl-smi">Long</span> <span class="pl-s1">id</span>) {
+        <span class="pl-smi">User</span> <span class="pl-s1">user</span> = <span class="pl-s1">userService</span>.<span class="pl-en">getUserById</span>(<span class="pl-s1">id</span>);
+        <span class="pl-k">if</span> (<span class="pl-s1">user</span> != <span class="pl-c1">null</span>) {
+            <span class="pl-k">return</span> <span class="pl-smi">ResponseEntity</span>.<span class="pl-en">ok</span>(<span class="pl-s1">user</span>);
+        } <span class="pl-k">else</span> {
+            <span class="pl-k">return</span> <span class="pl-smi">ResponseEntity</span>.<span class="pl-en">notFound</span>().<span class="pl-en">build</span>();
+        }
+    }
+}</pre></div>
+<p>这些示例展示了 Spring MVC 提供的各种功能，并演示了如何使用注解、配置文件和相关组件来实现各种功能。您可以根据具体需求和场景进一步定制和扩展这些功能。</p></div>
+<div style="font-size:small;margin-top:8px;float:right;"></div>
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+</div>
+    <div id="footer">Copyright © <span id="year"></span><a href="https://leyuan123.github.io"> 个人博客 </a>
+<p>
+<span id="runday"></span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a>
+</p>
+
+<script>
+if("06/22/2024"!=""){
+    var now=new Date();
+    var startSite=new Date("06/22/2024");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("year").innerHTML=now.getFullYear();
+    if(""!=""){document.getElementById("runday").innerHTML=" • "+"网站运行"+diffDay+"天"+" • ";}
+    else{document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";}
+}
+</script>
+</div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n\n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","leyuan123/leyuan123.github.io");
+    script.setAttribute("issue-term","title");
+    
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
+    else{script.setAttribute("theme","preferred-color-scheme");}
+    
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
+}
+
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
+            console.log("utterances Load OK");
+        }
+    }
+}
+</script>
+
+
+</html>
