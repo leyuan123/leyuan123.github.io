@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="//cdn.staticfile.net/Primer/21.0.7/primer.css" rel="stylesheet" />
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/126044735?v=4"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="### 直接前端导出数据成Excel文件
+
+#### 1.1安装`xlsx`库
+
+首先安装`xlsx`库
+
+```bash
+npm install xlsx
+```
+
+#### 1.2在Vue组件中使用`xlsx`导出Excel
+
+~~~vue
+<template>
+  <div>
+    <el-button type='primary' @click='downloadData' style='margin-bottom: 10px'>
+      下载数据
+    </el-button>
+    <el-table :data='tableData' style='width: 100%'>
+      <el-table-column label='课题名称' width='180'>
+        <template slot-scope='scope'>
+          <i class='el-icon-time'></i>
+          <span style='margin-left: 10px'>{{ scope.row.TopicName }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label='姓名' width='180'>
+        <template slot-scope='scope'>
+          <el-popover trigger='hover' placement='top'>
+            <p>学生姓名: {{ scope.row.name }}</p>
+            <p>
+              是否通过: {{
+                scope.row.status == '0'
+                  ? '未评分'
+                  : scope.row.status == '1'
+                  ? '通过'
+                  : '未通过'
+              }}
+            </p>
+            <div slot='reference' class='name-wrapper'>
+              <el-tag size='medium'>{{ scope.row.name }}</el-tag>
+            </div>
+          </el-popover>
+        </template>
+      </el-table-column>
+
+      <el-table-column label='评分'>
+        <template slot-scope='scope'>
+          <el-select v-model='scope.row.status' placeholder='请选择'>
+            <el-option label='未评分' value='0'></el-option>
+            <el-option label='通过' value='1'></el-option>
+            <el-option label='未通过' value='2'></el-option>
+          </el-select>
+        </template>
+      </el-table-column>
+
+      <el-table-column label='操作'>
+        <template slot-scope='scope'>
+          <el-button size='mini' @click='handleEdit(scope.$index, scope.row)'>提交</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
+</template>
+
+<script>
+import * as XLSX from 'xlsx';
+
+export default {
+  data() {
+    return {
+      tableData: [
+        // 示例数据
+        {
+          TopicName: '课题1',
+          name: '学生1',
+          status: '0',
+        },
+        {
+          TopicName: '课题2',
+          name: '学生2',
+          status: '1',
+        },
+      ],
+    };
+  },
+  methods: {
+    handleEdit(index, row) {
+      console.log('提交:', row);
+      // 处理提交逻辑，例如调用API更新数据
+    },
+    downloadData() {
+      const data = this.tableData.map(row => ({
+        '课题名称': row.TopicName,
+        '姓名': row.name,
+        '状态': row.status == '0' ? '未评分' : row.status == '1' ? '通过' : '未通过'
+      }));
+
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+      XLSX.writeFile(workbook, 'tableData.xlsx');
+    },
+  },
+};
+</script>
+
+<style scoped>
+/* 添加你的样式 */
+</style>
+
+~~~
+
+- 解释
+
+**1.安装 `xlsx` 库**：使用 `npm install xlsx` 安装 `xlsx` 库。">
+<meta property="og:title" content="直接前端导出数据成Excel文件">
+<meta property="og:description" content="### 直接前端导出数据成Excel文件
+
+#### 1.1安装`xlsx`库
+
+首先安装`xlsx`库
+
+```bash
+npm install xlsx
+```
+
+#### 1.2在Vue组件中使用`xlsx`导出Excel
+
+~~~vue
+<template>
+  <div>
+    <el-button type='primary' @click='downloadData' style='margin-bottom: 10px'>
+      下载数据
+    </el-button>
+    <el-table :data='tableData' style='width: 100%'>
+      <el-table-column label='课题名称' width='180'>
+        <template slot-scope='scope'>
+          <i class='el-icon-time'></i>
+          <span style='margin-left: 10px'>{{ scope.row.TopicName }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label='姓名' width='180'>
+        <template slot-scope='scope'>
+          <el-popover trigger='hover' placement='top'>
+            <p>学生姓名: {{ scope.row.name }}</p>
+            <p>
+              是否通过: {{
+                scope.row.status == '0'
+                  ? '未评分'
+                  : scope.row.status == '1'
+                  ? '通过'
+                  : '未通过'
+              }}
+            </p>
+            <div slot='reference' class='name-wrapper'>
+              <el-tag size='medium'>{{ scope.row.name }}</el-tag>
+            </div>
+          </el-popover>
+        </template>
+      </el-table-column>
+
+      <el-table-column label='评分'>
+        <template slot-scope='scope'>
+          <el-select v-model='scope.row.status' placeholder='请选择'>
+            <el-option label='未评分' value='0'></el-option>
+            <el-option label='通过' value='1'></el-option>
+            <el-option label='未通过' value='2'></el-option>
+          </el-select>
+        </template>
+      </el-table-column>
+
+      <el-table-column label='操作'>
+        <template slot-scope='scope'>
+          <el-button size='mini' @click='handleEdit(scope.$index, scope.row)'>提交</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
+</template>
+
+<script>
+import * as XLSX from 'xlsx';
+
+export default {
+  data() {
+    return {
+      tableData: [
+        // 示例数据
+        {
+          TopicName: '课题1',
+          name: '学生1',
+          status: '0',
+        },
+        {
+          TopicName: '课题2',
+          name: '学生2',
+          status: '1',
+        },
+      ],
+    };
+  },
+  methods: {
+    handleEdit(index, row) {
+      console.log('提交:', row);
+      // 处理提交逻辑，例如调用API更新数据
+    },
+    downloadData() {
+      const data = this.tableData.map(row => ({
+        '课题名称': row.TopicName,
+        '姓名': row.name,
+        '状态': row.status == '0' ? '未评分' : row.status == '1' ? '通过' : '未通过'
+      }));
+
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+      XLSX.writeFile(workbook, 'tableData.xlsx');
+    },
+  },
+};
+</script>
+
+<style scoped>
+/* 添加你的样式 */
+</style>
+
+~~~
+
+- 解释
+
+**1.安装 `xlsx` 库**：使用 `npm install xlsx` 安装 `xlsx` 库。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://leyuan123.github.io/post/zhi-jie-qian-duan-dao-chu-shu-ju-cheng-Excel-wen-jian.html">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/126044735?v=4">
+<title>直接前端导出数据成Excel文件</title>
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+</style>
+
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">直接前端导出数据成Excel文件</h1>
+<div class="title-right">
+    <a href="https://leyuan123.github.io" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/leyuan123/leyuan123.github.io/issues/3" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><h3>直接前端导出数据成Excel文件</h3>
+<h4>1.1安装<code class="notranslate">xlsx</code>库</h4>
+<p>首先安装<code class="notranslate">xlsx</code>库</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">npm install xlsx</pre></div>
+<h4>1.2在Vue组件中使用<code class="notranslate">xlsx</code>导出Excel</h4>
+<div class="highlight highlight-text-html-vue"><pre class="notranslate">&lt;<span class="pl-ent">template</span>&gt;
+  &lt;<span class="pl-ent">div</span>&gt;
+    &lt;<span class="pl-ent">el-button</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>primary<span class="pl-pds">"</span></span> @<span class="pl-e">click</span>=<span class="pl-s1"><span class="pl-pds">"</span>downloadData<span class="pl-pds">"</span></span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>margin-bottom: 10px<span class="pl-pds">"</span></span>&gt;
+      下载数据
+    &lt;/<span class="pl-ent">el-button</span>&gt;
+    &lt;<span class="pl-ent">el-table</span> :<span class="pl-e">data</span>=<span class="pl-s1"><span class="pl-pds">"</span>tableData<span class="pl-pds">"</span></span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>width: 100%<span class="pl-pds">"</span></span>&gt;
+      &lt;<span class="pl-ent">el-table-column</span> <span class="pl-e">label</span>=<span class="pl-s"><span class="pl-pds">"</span>课题名称<span class="pl-pds">"</span></span> <span class="pl-e">width</span>=<span class="pl-s"><span class="pl-pds">"</span>180<span class="pl-pds">"</span></span>&gt;
+        &lt;<span class="pl-ent">template</span> <span class="pl-e">slot-scope</span>=<span class="pl-s"><span class="pl-pds">"</span>scope<span class="pl-pds">"</span></span>&gt;
+          &lt;<span class="pl-ent">i</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>el-icon-time<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">i</span>&gt;
+          &lt;<span class="pl-ent">span</span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>margin-left: 10px<span class="pl-pds">"</span></span>&gt;{{ <span class="pl-smi">scope</span>.<span class="pl-smi">row</span>.<span class="pl-smi">TopicName</span> }}&lt;/<span class="pl-ent">span</span>&gt;
+        &lt;/<span class="pl-ent">template</span>&gt;
+      &lt;/<span class="pl-ent">el-table-column</span>&gt;
+
+      &lt;<span class="pl-ent">el-table-column</span> <span class="pl-e">label</span>=<span class="pl-s"><span class="pl-pds">"</span>姓名<span class="pl-pds">"</span></span> <span class="pl-e">width</span>=<span class="pl-s"><span class="pl-pds">"</span>180<span class="pl-pds">"</span></span>&gt;
+        &lt;<span class="pl-ent">template</span> <span class="pl-e">slot-scope</span>=<span class="pl-s"><span class="pl-pds">"</span>scope<span class="pl-pds">"</span></span>&gt;
+          &lt;<span class="pl-ent">el-popover</span> <span class="pl-e">trigger</span>=<span class="pl-s"><span class="pl-pds">"</span>hover<span class="pl-pds">"</span></span> <span class="pl-e">placement</span>=<span class="pl-s"><span class="pl-pds">"</span>top<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">p</span>&gt;学生姓名: {{ <span class="pl-smi">scope</span>.<span class="pl-smi">row</span>.<span class="pl-c1">name</span> }}&lt;/<span class="pl-ent">p</span>&gt;
+            &lt;<span class="pl-ent">p</span>&gt;
+              是否通过: {{
+                <span class="pl-smi">scope</span>.<span class="pl-smi">row</span>.<span class="pl-c1">status</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>0<span class="pl-pds">"</span></span>
+                  <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">"</span>未评分<span class="pl-pds">"</span></span>
+                  <span class="pl-k">:</span> <span class="pl-smi">scope</span>.<span class="pl-smi">row</span>.<span class="pl-c1">status</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>
+                  <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">"</span>通过<span class="pl-pds">"</span></span>
+                  <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>未通过<span class="pl-pds">"</span></span>
+              }}
+            &lt;/<span class="pl-ent">p</span>&gt;
+            &lt;<span class="pl-ent">div</span> <span class="pl-e">slot</span>=<span class="pl-s"><span class="pl-pds">"</span>reference<span class="pl-pds">"</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>name-wrapper<span class="pl-pds">"</span></span>&gt;
+              &lt;<span class="pl-ent">el-tag</span> <span class="pl-e">size</span>=<span class="pl-s"><span class="pl-pds">"</span>medium<span class="pl-pds">"</span></span>&gt;{{ <span class="pl-smi">scope</span>.<span class="pl-smi">row</span>.<span class="pl-c1">name</span> }}&lt;/<span class="pl-ent">el-tag</span>&gt;
+            &lt;/<span class="pl-ent">div</span>&gt;
+          &lt;/<span class="pl-ent">el-popover</span>&gt;
+        &lt;/<span class="pl-ent">template</span>&gt;
+      &lt;/<span class="pl-ent">el-table-column</span>&gt;
+
+      &lt;<span class="pl-ent">el-table-column</span> <span class="pl-e">label</span>=<span class="pl-s"><span class="pl-pds">"</span>评分<span class="pl-pds">"</span></span>&gt;
+        &lt;<span class="pl-ent">template</span> <span class="pl-e">slot-scope</span>=<span class="pl-s"><span class="pl-pds">"</span>scope<span class="pl-pds">"</span></span>&gt;
+          &lt;<span class="pl-ent">el-select</span> <span class="pl-e">v-model</span>=<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-smi">scope</span>.<span class="pl-smi">row</span>.<span class="pl-c1">status</span><span class="pl-pds">"</span></span> <span class="pl-e">placeholder</span>=<span class="pl-s"><span class="pl-pds">"</span>请选择<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">el-option</span> <span class="pl-e">label</span>=<span class="pl-s"><span class="pl-pds">"</span>未评分<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">"</span>0<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">el-option</span>&gt;
+            &lt;<span class="pl-ent">el-option</span> <span class="pl-e">label</span>=<span class="pl-s"><span class="pl-pds">"</span>通过<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">el-option</span>&gt;
+            &lt;<span class="pl-ent">el-option</span> <span class="pl-e">label</span>=<span class="pl-s"><span class="pl-pds">"</span>未通过<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">"</span>2<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">el-option</span>&gt;
+          &lt;/<span class="pl-ent">el-select</span>&gt;
+        &lt;/<span class="pl-ent">template</span>&gt;
+      &lt;/<span class="pl-ent">el-table-column</span>&gt;
+
+      &lt;<span class="pl-ent">el-table-column</span> <span class="pl-e">label</span>=<span class="pl-s"><span class="pl-pds">"</span>操作<span class="pl-pds">"</span></span>&gt;
+        &lt;<span class="pl-ent">template</span> <span class="pl-e">slot-scope</span>=<span class="pl-s"><span class="pl-pds">"</span>scope<span class="pl-pds">"</span></span>&gt;
+          &lt;<span class="pl-ent">el-button</span> <span class="pl-e">size</span>=<span class="pl-s"><span class="pl-pds">"</span>mini<span class="pl-pds">"</span></span> @<span class="pl-e">click</span>=<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-en">handleEdit</span>(<span class="pl-smi">scope</span>.<span class="pl-smi">$index</span>, <span class="pl-smi">scope</span>.<span class="pl-smi">row</span>)<span class="pl-pds">"</span></span>&gt;提交&lt;/<span class="pl-ent">el-button</span>&gt;
+        &lt;/<span class="pl-ent">template</span>&gt;
+      &lt;/<span class="pl-ent">el-table-column</span>&gt;
+    &lt;/<span class="pl-ent">el-table</span>&gt;
+  &lt;/<span class="pl-ent">div</span>&gt;
+&lt;/<span class="pl-ent">template</span>&gt;
+
+<span class="pl-s1">&lt;<span class="pl-ent">script</span>&gt;</span>
+<span class="pl-s1"><span class="pl-k">import</span> <span class="pl-c1">*</span> <span class="pl-k">as</span> <span class="pl-smi">XLSX</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">"</span>xlsx<span class="pl-pds">"</span></span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">export</span> <span class="pl-c1">default</span> {</span>
+<span class="pl-s1">  <span class="pl-en">data</span>() {</span>
+<span class="pl-s1">    <span class="pl-k">return</span> {</span>
+<span class="pl-s1">      tableData<span class="pl-k">:</span> [</span>
+<span class="pl-s1">        <span class="pl-c"><span class="pl-c">//</span> 示例数据</span></span>
+<span class="pl-s1">        {</span>
+<span class="pl-s1">          TopicName<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>课题1<span class="pl-pds">"</span></span>,</span>
+<span class="pl-s1">          name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>学生1<span class="pl-pds">"</span></span>,</span>
+<span class="pl-s1">          status<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>0<span class="pl-pds">"</span></span>,</span>
+<span class="pl-s1">        },</span>
+<span class="pl-s1">        {</span>
+<span class="pl-s1">          TopicName<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>课题2<span class="pl-pds">"</span></span>,</span>
+<span class="pl-s1">          name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>学生2<span class="pl-pds">"</span></span>,</span>
+<span class="pl-s1">          status<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>,</span>
+<span class="pl-s1">        },</span>
+<span class="pl-s1">      ],</span>
+<span class="pl-s1">    };</span>
+<span class="pl-s1">  },</span>
+<span class="pl-s1">  methods<span class="pl-k">:</span> {</span>
+<span class="pl-s1">    <span class="pl-en">handleEdit</span>(<span class="pl-smi">index</span>, <span class="pl-smi">row</span>) {</span>
+<span class="pl-s1">      <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>提交:<span class="pl-pds">"</span></span>, row);</span>
+<span class="pl-s1">      <span class="pl-c"><span class="pl-c">//</span> 处理提交逻辑，例如调用API更新数据</span></span>
+<span class="pl-s1">    },</span>
+<span class="pl-s1">    <span class="pl-en">downloadData</span>() {</span>
+<span class="pl-s1">      <span class="pl-k">const</span> <span class="pl-c1">data</span> <span class="pl-k">=</span> <span class="pl-c1">this</span>.<span class="pl-smi">tableData</span>.<span class="pl-en">map</span>(<span class="pl-smi">row</span> <span class="pl-k">=&gt;</span> ({</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">"</span>课题名称<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-smi">row</span>.<span class="pl-smi">TopicName</span>,</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">"</span>姓名<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-smi">row</span>.<span class="pl-c1">name</span>,</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">"</span>状态<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-smi">row</span>.<span class="pl-c1">status</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>0<span class="pl-pds">"</span></span> <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">"</span>未评分<span class="pl-pds">"</span></span> <span class="pl-k">:</span> <span class="pl-smi">row</span>.<span class="pl-c1">status</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span> <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">"</span>通过<span class="pl-pds">"</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>未通过<span class="pl-pds">"</span></span></span>
+<span class="pl-s1">      }));</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">      <span class="pl-k">const</span> <span class="pl-c1">worksheet</span> <span class="pl-k">=</span> <span class="pl-c1">XLSX</span>.<span class="pl-smi">utils</span>.<span class="pl-en">json_to_sheet</span>(data);</span>
+<span class="pl-s1">      <span class="pl-k">const</span> <span class="pl-c1">workbook</span> <span class="pl-k">=</span> <span class="pl-c1">XLSX</span>.<span class="pl-smi">utils</span>.<span class="pl-en">book_new</span>();</span>
+<span class="pl-s1">      <span class="pl-c1">XLSX</span>.<span class="pl-smi">utils</span>.<span class="pl-en">book_append_sheet</span>(workbook, worksheet, <span class="pl-s"><span class="pl-pds">"</span>Sheet1<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">      <span class="pl-c1">XLSX</span>.<span class="pl-en">writeFile</span>(workbook, <span class="pl-s"><span class="pl-pds">"</span>tableData.xlsx<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1">    },</span>
+<span class="pl-s1">  },</span>
+<span class="pl-s1">};</span>
+<span class="pl-s1">&lt;/<span class="pl-ent">script</span>&gt;</span>
+
+<span class="pl-s1">&lt;<span class="pl-ent">style</span> <span class="pl-e">scoped</span>&gt;</span>
+<span class="pl-s1"><span class="pl-c"><span class="pl-c">/*</span> 添加你的样式 <span class="pl-c">*/</span></span></span>
+<span class="pl-s1">&lt;/<span class="pl-ent">style</span>&gt;</span>
+</pre></div>
+<ul>
+<li>解释</li>
+</ul>
+<p><strong>1.安装 <code class="notranslate">xlsx</code> 库</strong>：使用 <code class="notranslate">npm install xlsx</code> 安装 <code class="notranslate">xlsx</code> 库。</p>
+<p><strong>2.引入 <code class="notranslate">xlsx</code> 库</strong>：在 <code class="notranslate">script</code> 部分引入 <code class="notranslate">xlsx</code>。</p>
+<p><strong>3.下载数据方法 <code class="notranslate">downloadData</code></strong>：</p>
+<ul>
+<li>将 <code class="notranslate">tableData</code> 映射为需要导出的格式。</li>
+<li>使用 <code class="notranslate">XLSX.utils.json_to_sheet</code> 方法将数据转换为 Excel 工作表。</li>
+<li>创建一个新的工作簿 <code class="notranslate">XLSX.utils.book_new()</code>。</li>
+<li>将工作表添加到工作簿中 <code class="notranslate">XLSX.utils.book_append_sheet</code>。</li>
+<li>使用 <code class="notranslate">XLSX.writeFile</code> 方法将工作簿保存为 <code class="notranslate">tableData.xlsx</code> 文件。</li>
+</ul>
+<p><strong>4.详细解释downloadData</strong></p>
+<div class="highlight highlight-source-js"><pre class="notranslate"><span class="pl-en">downloadData</span><span class="pl-kos">(</span><span class="pl-kos">)</span><span class="pl-kos"></span> <span class="pl-kos">{</span>
+      <span class="pl-k">const</span> <span class="pl-s1">data</span> <span class="pl-c1">=</span> <span class="pl-smi">this</span><span class="pl-kos">.</span><span class="pl-c1">tableData</span><span class="pl-kos">.</span><span class="pl-en">map</span><span class="pl-kos">(</span><span class="pl-s1">row</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">(</span><span class="pl-kos">{</span>
+        <span class="pl-s">"课题名称"</span>: <span class="pl-s1">row</span><span class="pl-kos">.</span><span class="pl-c1">TopicName</span><span class="pl-kos">,</span>
+        <span class="pl-s">"姓名"</span>: <span class="pl-s1">row</span><span class="pl-kos">.</span><span class="pl-c1">name</span><span class="pl-kos">,</span>
+        <span class="pl-s">"状态"</span>: <span class="pl-s1">row</span><span class="pl-kos">.</span><span class="pl-c1">status</span> <span class="pl-c1">==</span> <span class="pl-s">"0"</span> ? <span class="pl-s">"未评分"</span> : <span class="pl-s1">row</span><span class="pl-kos">.</span><span class="pl-c1">status</span> <span class="pl-c1">==</span> <span class="pl-s">"1"</span> ? <span class="pl-s">"通过"</span> : <span class="pl-s">"未通过"</span>
+      <span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+
+      <span class="pl-k">const</span> <span class="pl-s1">worksheet</span> <span class="pl-c1">=</span> <span class="pl-c1">XLSX</span><span class="pl-kos">.</span><span class="pl-c1">utils</span><span class="pl-kos">.</span><span class="pl-en">json_to_sheet</span><span class="pl-kos">(</span><span class="pl-s1">data</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+      <span class="pl-k">const</span> <span class="pl-s1">workbook</span> <span class="pl-c1">=</span> <span class="pl-c1">XLSX</span><span class="pl-kos">.</span><span class="pl-c1">utils</span><span class="pl-kos">.</span><span class="pl-en">book_new</span><span class="pl-kos">(</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+      <span class="pl-c1">XLSX</span><span class="pl-kos">.</span><span class="pl-c1">utils</span><span class="pl-kos">.</span><span class="pl-en">book_append_sheet</span><span class="pl-kos">(</span><span class="pl-s1">workbook</span><span class="pl-kos">,</span> <span class="pl-s1">worksheet</span><span class="pl-kos">,</span> <span class="pl-s">"Sheet1"</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+
+      <span class="pl-c1">XLSX</span><span class="pl-kos">.</span><span class="pl-en">writeFile</span><span class="pl-kos">(</span><span class="pl-s1">workbook</span><span class="pl-kos">,</span> <span class="pl-s">"tableData.xlsx"</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+    <span class="pl-kos">}</span><span class="pl-kos">,</span>
+  <span class="pl-kos">}</span><span class="pl-kos">,</span></pre></div>
+<ul>
+<li>数据替换</li>
+</ul>
+<div class="highlight highlight-source-js"><pre class="notranslate"><span class="pl-en">downloadData</span><span class="pl-kos">(</span><span class="pl-kos">)</span><span class="pl-kos"></span> <span class="pl-kos">{</span>
+  <span class="pl-k">const</span> <span class="pl-s1">data</span> <span class="pl-c1">=</span> <span class="pl-smi">this</span><span class="pl-kos">.</span><span class="pl-c1">tableData</span><span class="pl-kos">.</span><span class="pl-en">map</span><span class="pl-kos">(</span><span class="pl-s1">row</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">(</span><span class="pl-kos">{</span>
+    <span class="pl-s">"课题名称"</span>: <span class="pl-s1">row</span><span class="pl-kos">.</span><span class="pl-c1">TopicName</span><span class="pl-kos">,</span>
+    <span class="pl-s">"姓名"</span>: <span class="pl-s1">row</span><span class="pl-kos">.</span><span class="pl-c1">name</span><span class="pl-kos">,</span>
+    <span class="pl-s">"状态"</span>: <span class="pl-s1">row</span><span class="pl-kos">.</span><span class="pl-c1">status</span> <span class="pl-c1">==</span> <span class="pl-s">"0"</span> ? <span class="pl-s">"未评分"</span> : <span class="pl-s1">row</span><span class="pl-kos">.</span><span class="pl-c1">status</span> <span class="pl-c1">==</span> <span class="pl-s">"1"</span> ? <span class="pl-s">"通过"</span> : <span class="pl-s">"未通过"</span>
+  <span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">)</span><span class="pl-kos">;</span><span class="pl-kos"></span></pre></div>
+<p>1.使用 <code class="notranslate">map</code> 方法遍历 <code class="notranslate">tableData</code> 数组，将每一行数据映射为一个新对象。</p>
+<p>2.这个新对象的键为 <code class="notranslate">"课题名称"</code>, <code class="notranslate">"姓名"</code> 和 <code class="notranslate">"状态"</code>，值分别对应 <code class="notranslate">row.TopicName</code>, <code class="notranslate">row.name</code> 和 <code class="notranslate">row.status</code>。</p>
+<p>3.<code class="notranslate">row.status</code> 的值通过三元运算符进行转换：如果 <code class="notranslate">status</code> 为 <code class="notranslate">"0"</code> 则显示 <code class="notranslate">"未评分"</code>，如果 <code class="notranslate">status</code> 为 <code class="notranslate">"1"</code> 则显示 <code class="notranslate">"通过"</code>，否则显示 <code class="notranslate">"未通过"</code>。</p>
+<ul>
+<li>转换为工作表</li>
+</ul>
+<div class="highlight highlight-source-js"><pre class="notranslate">  <span class="pl-k">const</span> <span class="pl-s1">worksheet</span> <span class="pl-c1">=</span> <span class="pl-c1">XLSX</span><span class="pl-kos">.</span><span class="pl-c1">utils</span><span class="pl-kos">.</span><span class="pl-en">json_to_sheet</span><span class="pl-kos">(</span><span class="pl-s1">data</span><span class="pl-kos">)</span><span class="pl-kos">;</span></pre></div>
+<p>1.使用 <code class="notranslate">XLSX.utils.json_to_sheet(data)</code> 方法将刚才生成的 <code class="notranslate">data</code> 数组转换为一个 Excel 工作表。</p>
+<p>2.<code class="notranslate">json_to_sheet</code> 方法会将 JavaScript 对象数组转换为一个可用于 Excel 的工作表对象。</p>
+<ul>
+<li>创建工作薄</li>
+</ul>
+<div class="highlight highlight-source-js"><pre class="notranslate">  <span class="pl-k">const</span> <span class="pl-s1">workbook</span> <span class="pl-c1">=</span> <span class="pl-c1">XLSX</span><span class="pl-kos">.</span><span class="pl-c1">utils</span><span class="pl-kos">.</span><span class="pl-en">book_new</span><span class="pl-kos">(</span><span class="pl-kos">)</span><span class="pl-kos">;</span></pre></div>
+<p>1.使用 <code class="notranslate">XLSX.utils.book_new()</code> 方法创建一个新的工作簿对象。</p>
+<p>2.工作簿是 Excel 文件的基本结构，可以包含多个工作表。</p>
+<ul>
+<li>添加工作表到工作薄</li>
+</ul>
+<div class="highlight highlight-source-js"><pre class="notranslate">  <span class="pl-c1">XLSX</span><span class="pl-kos">.</span><span class="pl-c1">utils</span><span class="pl-kos">.</span><span class="pl-en">book_append_sheet</span><span class="pl-kos">(</span><span class="pl-s1">workbook</span><span class="pl-kos">,</span> <span class="pl-s1">worksheet</span><span class="pl-kos">,</span> <span class="pl-s">"Sheet1"</span><span class="pl-kos">)</span><span class="pl-kos">;</span></pre></div>
+<p>1.使用 <code class="notranslate">XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1")</code> 方法将前面创建的工作表 <code class="notranslate">worksheet</code> 添加到工作簿 <code class="notranslate">workbook</code> 中。</p>
+<p>2.<code class="notranslate">Sheet1</code> 是这个工作表的名字，你可以根据需要进行更改。</p>
+<ul>
+<li>写入并保存文件</li>
+</ul>
+<div class="highlight highlight-source-js"><pre class="notranslate">  <span class="pl-c1">XLSX</span><span class="pl-kos">.</span><span class="pl-en">writeFile</span><span class="pl-kos">(</span><span class="pl-s1">workbook</span><span class="pl-kos">,</span> <span class="pl-s">"tableData.xlsx"</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-kos">}</span></pre></div>
+<p>1.使用 <code class="notranslate">XLSX.writeFile(workbook, "tableData.xlsx")</code> 方法将工作簿保存为一个 Excel 文件。</p>
+<p>2.<code class="notranslate">"tableData.xlsx"</code> 是保存的文件名，可以根据需要进行更改。</p>
+<p>3.这个方法会触发浏览器下载动作，将文件下载到用户的电脑中。</p>
+<h4>总结</h4>
+<p>该方法的整个流程如下：</p>
+<ol>
+<li>将 <code class="notranslate">tableData</code> 转换为符合需求的对象数组。</li>
+<li>使用 <code class="notranslate">xlsx</code> 库将对象数组转换为 Excel 工作表。</li>
+<li>创建一个新的工作簿。</li>
+<li>将工作表添加到工作簿中。</li>
+<li>将工作簿保存为 Excel 文件，并触发浏览器下载。</li>
+</ol></div>
+<div style="font-size:small;margin-top:8px;float:right;"></div>
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+</div>
+    <div id="footer">Copyright © <span id="year"></span><a href="https://leyuan123.github.io"> 个人博客 </a>
+<p>
+<span id="runday"></span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a>
+</p>
+
+<script>
+if("06/22/2024"!=""){
+    var now=new Date();
+    var startSite=new Date("06/22/2024");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("year").innerHTML=now.getFullYear();
+    if(""!=""){document.getElementById("runday").innerHTML=" • "+"网站运行"+diffDay+"天"+" • ";}
+    else{document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";}
+}
+</script>
+</div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n\n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","leyuan123/leyuan123.github.io");
+    script.setAttribute("issue-term","title");
+    
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
+    else{script.setAttribute("theme","preferred-color-scheme");}
+    
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
+}
+
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
+            console.log("utterances Load OK");
+        }
+    }
+}
+</script>
+
+
+</html>
