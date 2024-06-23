@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="//cdn.staticfile.net/Primer/21.0.7/primer.css" rel="stylesheet" />
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/126044735?v=4"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="### ubuntu后台运行与查看程序的多种详细方法
+
+> 方法1：使用&
+> 方法2：使用nohup
+> 方法3：使用nohup与&组合等（见nohup中第6部分的示例介绍）
+
+#### 一.使用&
+
+一般在执行shell命令的时候我们在命令的后面加上一个‘&’，这样就可以使得该程序在**后台运行**。">
+<meta property="og:title" content="Ubuntu后台运行&查看进程&结束进程">
+<meta property="og:description" content="### ubuntu后台运行与查看程序的多种详细方法
+
+> 方法1：使用&
+> 方法2：使用nohup
+> 方法3：使用nohup与&组合等（见nohup中第6部分的示例介绍）
+
+#### 一.使用&
+
+一般在执行shell命令的时候我们在命令的后面加上一个‘&’，这样就可以使得该程序在**后台运行**。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://leyuan123.github.io/post/Ubuntu-hou-tai-yun-xing-%26-cha-kan-jin-cheng-%26-jie-shu-jin-cheng.html">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/126044735?v=4">
+<title>Ubuntu后台运行&查看进程&结束进程</title>
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+</style>
+
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">Ubuntu后台运行&查看进程&结束进程</h1>
+<div class="title-right">
+    <a href="https://leyuan123.github.io" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/leyuan123/leyuan123.github.io/issues/2" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><h3>ubuntu后台运行与查看程序的多种详细方法</h3>
+<blockquote>
+<p>方法1：使用&amp;<br>
+方法2：使用nohup<br>
+方法3：使用nohup与&amp;组合等（见nohup中第6部分的示例介绍）</p>
+</blockquote>
+<h4>一.使用&amp;</h4>
+<p>一般在执行shell命令的时候我们在命令的后面加上一个‘&amp;’，这样就可以使得该程序在<strong>后台运行</strong>。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">python A.py <span class="pl-k">&amp;</span></pre></div>
+<ul>
+<li>但是&amp;有一定局限性：<br>
+当程序运行起来之后依旧会再次在shell中输出打印信息，shell依旧被占用，关闭shell则程序退出；这个时候我们可以使用ctrl+z命令，使得这个信息消失，可以做别的事情，但是关闭shell的时候程序依旧会退出，因此这些办法都不能解决问题。<br>
+由此需要nohup来解决</li>
+</ul>
+<h4>二.nohup的介绍与使用</h4>
+<h5>1.简介</h5>
+<p><strong>nohup的意思就是：永久执行</strong>，是no hang up的缩写，指不间断，不挂断。运行一个进程的时候，**不想让其在你退出账号时关闭，即可用nohup。**nohup用于不挂断地运行命令。nohup在不规定的情况下，所以输出内容会到<code class="notranslate">nohup.out</code>中。</p>
+<blockquote>
+<p>nohup运行命令可以使命令永久的执行下去，和用户终端没有关系，例如我们断开SSH连接都不会影响运行，注意了nohup没有后台运行的意思；&amp;是指在后台运行，但当用户退出(挂起)的时候，命令自动也跟着退出。</p>
+</blockquote>
+<h5>2.用法</h5>
+<p>语法如下：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">nohup Command [ Arg … ] [ <span class="pl-k">&amp;</span> ]</pre></div>
+<ul>
+<li><code class="notranslate">Command</code>：要运行的命令。</li>
+<li><code class="notranslate">Arg</code>：命令的参数。</li>
+<li><code class="notranslate">&amp;</code>：将命令放在后台执行</li>
+</ul>
+<p>例如，你可以使用 <code class="notranslate">nohup</code> 命令运行一个长时间运行的任务，让它在后台持续运行而不受终端关闭的影响。示例：</p>
+<pre class="notranslate"><code class="notranslate">nohup python A.py &amp;
+</code></pre>
+<p>这将在后台运行 <code class="notranslate">./A.py</code> 脚本，并且即使你关闭终端，该脚本也会继续运行。</p>
+<ul>
+<li>
+<p>问</p>
+<ul>
+<li>无论是否将 nohup 命令的输出重定向到终端，输出都将附加到当前目录的 nohup.out 文件中。如果当前目录的 nohup.out 文件不可写，输出重定向到 $HOME/nohup.out 文件中。<strong>这句话对吗</strong></li>
+</ul>
+</li>
+<li>
+<p>答</p>
+<ul>
+<li>是的，<strong>这句话是正确的</strong>。当使用 <code class="notranslate">nohup</code> 命令时，无论是否将输出重定向到终端，输出都将附加到名为 <code class="notranslate">nohup.out</code> 的文件中。如果当前目录的 <code class="notranslate">nohup.out</code> 文件不可写，输出将被重定向到用户的家目录下的 <code class="notranslate">nohup.out</code> 文件中。这样可以确保即使用户退出登录或关闭终端，命令的输出仍然会被保存在文件中。</li>
+</ul>
+</li>
+<li>
+<p>问</p>
+<ul>
+<li>退出状态出口值：<code class="notranslate">126</code> 可以查找但不能调用 Command 参数指定的命令。<code class="notranslate">127</code> nohup 命令发生错误或不能查找由 Command 参数指定的命令。否则，nohup 命令的退出状态是 Command 参数指定命令的退出状态。</li>
+</ul>
+</li>
+<li>
+<p>答</p>
+<ul>
+<li>这个描述是正确的。
+<ul>
+<li>如果 nohup 命令返回退出状态值 126，则表示能够找到指定的命令，但无法调用该命令。</li>
+<li>如果 nohup 命令返回退出状态值 127，则表示 nohup 命令本身发生错误或无法找到指定的命令。</li>
+<li>否则，nohup 命令的退出状态将是由 <code class="notranslate">Command</code> 参数指定命令的退出状态。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5>3.由此可知nohup和&amp;一起使用最优</h5>
+<h4>三.指令</h4>
+<h6>1.操作系统中有三个常用的流</h6>
+<table role="table">
+<thead>
+<tr>
+<th>0</th>
+<th><strong>标准输入流 stdin,用户键盘输入的内容</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>标准输出流 stdout ，输出到显示屏的内容</td>
+</tr>
+<tr>
+<td>2</td>
+<td>标准错误流 stderr，报错内容</td>
+</tr>
+</tbody>
+</table>
+<h6>2.<code class="notranslate">2&gt;&amp;1</code></h6>
+<ul>
+<li>
+<p><code class="notranslate">2&gt;&amp;1</code>是一个整体，是将标准错误（2）重定向到标准输出（&amp;1）,即将错误内容重定向输入到标准输出中去。</p>
+</li>
+<li>
+<p>在命令行中，<code class="notranslate">&amp;1</code> 表示文件描述符1，即标准输出。在重定向输出时，<code class="notranslate">&amp;</code> 符号用于指定文件描述符，而不是文件名。所以 <code class="notranslate">2&gt;&amp;1</code> 表示将标准错误输出重定向到标准输出。这种写法可以确保标准错误输出与标准输出都输出到同一个地方，便于查看和处理。</p>
+</li>
+<li>
+<p>另外，需要注意的是，<code class="notranslate">&amp;1</code> 通常与 <code class="notranslate">&gt;</code> 或 <code class="notranslate">&gt;&gt;</code> 一起使用，例如 <code class="notranslate">2&gt;&amp;1</code> 或 <code class="notranslate">1&gt;&amp;2</code>。而当单独使用时，<code class="notranslate">&amp;1</code> 不会产生任何效果，因为缺少指定的输出方向。</p>
+</li>
+</ul>
+<h6>3.示例介绍</h6>
+<div class="highlight highlight-source-shell"><pre class="notranslate">nohup python A.py <span class="pl-k">&gt;&gt;</span> /home/my.log <span class="pl-k">2&gt;&amp;1</span> <span class="pl-k">&amp;</span></pre></div>
+<ul>
+<li><code class="notranslate">nohup</code>：表示后台运行命令并忽略挂断信号。</li>
+<li><code class="notranslate">python A.py</code>：要运行的命令，这里是执行 Python 脚本 <code class="notranslate">A.py</code>。</li>
+<li><code class="notranslate">&gt;&gt; /home/my.log</code>：将标准输出追加到文件 <code class="notranslate">/home/my.log</code> 中，<code class="notranslate">&gt;&gt;</code> 表示追加模式，如果文件不存在将会创建，如果文件已经存在则将输出追加到文件末尾。</li>
+<li><code class="notranslate">2&gt;&amp;1</code>：将标准错误重定向到标准输出，这样标准错误输出也会被追加到 <code class="notranslate">/home/my.log</code> 文件中。</li>
+<li><code class="notranslate">&amp;</code>：使命令在后台执行。</li>
+</ul>
+<p>综合起来，这条命令的作用是在后台运行 Python 脚本 <code class="notranslate">A.py</code>，将标准输出和标准错误输出都追加到文件 <code class="notranslate">/home/my.log</code> 中。这样即使终端关闭，脚本的输出也会被保存到指定的日志文件中，方便后续检查日志。</p>
+<p><strong>3.1追加解释</strong></p>
+<p>上面的指令可以拆分</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">nohup python A.py <span class="pl-k">1&gt;&gt;</span> /home/my.log <span class="pl-k">&amp;</span>
+nohup python A.py <span class="pl-k">2&gt;&gt;</span> /home/my.log <span class="pl-k">&amp;</span></pre></div>
+<p>这两条命令可以转换成使用不同方式进行标准输出和标准错误输出的重定向：</p>
+<ol>
+<li><code class="notranslate">nohup python A.py 1&gt;&gt; /home/my.log &amp;</code>：将标准输出追加到文件 <code class="notranslate">/home/my.log</code> 中。其中，<code class="notranslate">1&gt;&gt;</code> 表示将标准输出重定向并追加到指定文件。</li>
+<li><code class="notranslate">nohup python A.py 2&gt;&gt; /home/my.log &amp;</code>：将标准错误输出追加到文件 <code class="notranslate">/home/my.log</code> 中。其中，<code class="notranslate">2&gt;&gt;</code> 表示将标准错误输出重定向并追加到指定文件。</li>
+</ol>
+<p>这样的设置可以让标准输出和标准错误输出分别保存在同一个文件中，并且分别进行追加，更加直观地区分错误信息和输出信息。</p>
+<p><strong>3.2关闭缓冲时时同步日志文件</strong></p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">nohup python -u A.py <span class="pl-k">&gt;&gt;</span> /home/my.log <span class="pl-k">2&gt;&amp;1</span> <span class="pl-k">&amp;</span></pre></div>
+<ul>
+<li>
+<p>在这条命令中，<code class="notranslate">-u</code> 选项是用来关闭 Python 的输出缓冲的。这样可以让 Python 脚本的输出实时地写入到日志文件 <code class="notranslate">/home/my.log</code> 中，而不会等到缓冲区满才写入。这对于实时查看脚本输出非常有用，尤其是在日志分析和故障排查时。</p>
+</li>
+<li>
+<p>另外，<code class="notranslate">&gt;&gt; /home/my.log</code> 仍然表示将标准输出追加到文件 <code class="notranslate">/home/my.log</code> 中，<code class="notranslate">2&gt;&amp;1</code> 则表示将标准错误输出重定向到标准输出，实现将标准输出和标准错误输出都输入到同一个日志文件中。</p>
+</li>
+<li>
+<p>整个命令的作用是后台运行 Python 脚本 <code class="notranslate">A.py</code>，实时将标准输出和标准错误输出写入到 <code class="notranslate">/home/my.log</code> 日志文件中。</p>
+</li>
+</ul>
+<p>3.3<strong>覆盖</strong></p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">nohup python A.py <span class="pl-k">&gt;</span> /home/my.log <span class="pl-k">2&gt;&amp;1</span> <span class="pl-k">&amp;</span></pre></div>
+<p>这条命令与之前的命令略有不同，具体解释如下：</p>
+<ul>
+<li><code class="notranslate">nohup python A.py</code>：表示在后台运行 Python 脚本 <code class="notranslate">A.py</code>，并忽略挂断信号。</li>
+<li><code class="notranslate">&gt; /home/my.log</code>：表示将标准输出重定向到文件 <code class="notranslate">/home/my.log</code> 中，<code class="notranslate">&gt;</code> 表示覆盖模式，即如果文件不存在则创建，如果文件已经存在则覆盖文件内容。注意，这里只重定向了标准输出，并没有重定向标准错误。</li>
+<li><code class="notranslate">2&gt;&amp;1</code>：表示将标准错误输出重定向到标准输出，确保标准错误输出也输出到 <code class="notranslate">/home/my.log</code> 文件中。</li>
+<li><code class="notranslate">&amp;</code>：使命令在后台执行。</li>
+</ul>
+<p><strong>由于<code class="notranslate">&gt;</code>是覆盖所以一般不建议使用</strong></p>
+<h4>四.查看后台进程</h4>
+<p><strong>1.ps(推荐)</strong><br>
+Process State 是非常强大的进程查看命令，用于报告当前系统的进程状态。直接输入ps便可查看，ps还有许多功能，比较常用选项：<br>
+BSD风格<br>
+a——和终端有关的进程<br>
+x——和终端无关的进程<br>
+u——显示进程的执行者<br>
+sys V风格<br>
+-e——查看所有进程<br>
+-l——long，长格式<br>
+-f——full，详细信息<br>
+-o——指定输出格式<br>
+常用命令<br>
+ps #查看隶属于自己的进程</p>
+<p>ps -l（ps -u）#仅查看隶属于自己进程的详细信息</p>
+<p>更多课参考<a href="https://blog.csdn.net/wsxxdwwzjdy/article/details/78507698" rel="nofollow">https://blog.csdn.net/wsxxdwwzjdy/article/details/78507698</a></p>
+<ul>
+<li>
+<p>问</p>
+<ul>
+<li>1058470这是进程id怎么找到该进程在Ubuntu中</li>
+</ul>
+</li>
+<li>
+<p>答</p>
+<ul>
+<li>
+<p>在Ubuntu中，你可以使用 <code class="notranslate">ps</code> 命令来查找特定进程的信息。你可以在终端中输入以下命令来查找特定进程ID为1058470的进程：</p>
+<pre class="notranslate"><code class="notranslate">ps -p 1058470
+</code></pre>
+<p>这将显示具有进程ID为1058470的进程的详细信息，包括进程状态、运行时间等等。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">root@iZbp1b7wzhw2hhqiixdpdwZ:<span class="pl-k">~</span><span class="pl-c"><span class="pl-c">#</span> ps -p 1058470</span>
+    PID TTY          TIME CMD
+1058470 pts/4    00:00:12 java</pre></div>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>2.top</strong></p>
+<p>top是一个交互式系统性能监控工具，不同于ps是静态的结果输出，top可以实时动态地查看系统的整体运行情况。 通过top命令所提供的互动式界面，用热键可以管理。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">top</pre></div>
+<div class="highlight highlight-source-shell"><pre class="notranslate">root@iZbp1b7wzhw2hhqiixdpdwZ:<span class="pl-k">~</span><span class="pl-c"><span class="pl-c">#</span> top</span>
+top - 14:18:35 up 47 days,  5:52,  2 users,  load average: 0.05, 0.04, 0.03
+Tasks: 125 total,   1 running, 124 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  1.2 us,  1.3 sy,  0.0 ni, 97.5 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem <span class="pl-c1">:</span>   1685.0 total,    106.1 free,    825.2 used,    753.8 buff/cache
+MiB Swap:      0.0 total,      0.0 free,      0.0 used.    669.3 avail Mem 
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND                                                                                                                                       
+ 151564 root      20   0  152440  49640  15964 S   2.7   2.9  91:24.79 AliYunDunMonito                                                                                                                               
+1046361 root      20   0   17736  11744   8768 S   0.7   0.7   0:20.08 sshd                                                                                                                                          
+ 142832 mysql     20   0 1829228 424524  26552 S   0.3  24.6  65:38.52 mysqld                                                                                                                                        
+ 151520 root      20   0   32156   5568   4736 S   0.3   0.3   6:58.47 AliYunDunUpdate                                                                                                                               
+ 151553 root      20   0   88396  14644  12188 S   0.3   0.8  46:37.63 AliYunDun                                                                                                                                     
+1046569 root      20   0   11528   4864   3108 S   0.3   0.3   0:04.75 top                                                                                                                                           
+1058470 root      20   0 2971564 176016  28496 S   0.3  10.2   0:12.59 java                                                                                                                                          
+      1 root      20   0  102108  11168   6324 S   0.0   0.6   8:30.80 systemd                                                                                                                                       
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.35 kthreadd                                                                                                                                      
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp                                                                                                                                        
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp                                                                                                                                    
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq                                                                                                                                  
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns                                                                                                                                         
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri                                                                                                                   
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq                                                                                                                                  
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_                                                                                                                               
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace                                                                                                                               
+     13 root      20   0       0      0      0 S   0.0   0.0   0:27.95 ksoftirqd/0                                                                                                                                   
+     14 root      20   0       0      0      0 I   0.0   0.0  10:10.26 rcu_sched                                                                                                                                     
+     15 root      rt   0       0      0      0 S   0.0   0.0   0:10.50 migration/0                                                                                                                                   
+     16 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 idle_inject/0                                                                                                                                 
+     18 root      20   0       0      0      0 S   0.0   0.0   0:00.00 cpuhp/0                                                                                                                                       
+     19 root      20   0       0      0      0 S   0.0   0.0   0:00.00 cpuhp/1                                                                                                                                       
+     20 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 idle_inject/1                                                                                                                                 
+     21 root      rt   0       0      0      0 S   0.0   0.0   0:10.03 migration/1                                                                                                                                   
+     22 root      20   0       0      0      0 S   0.0   0.0   0:25.00 ksoftirqd/1                                                                                                                                   
+     24 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/1:0H-events_highpri                                                                                                                   
+     25 root      20   0       0      0      0 S   0.0   0.0   0:00.00 kdevtmpfs                                                                                                                                     
+     26 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 inet_fra</pre></div>
+<ul>
+<li>问
+<ul>
+<li>可以用top过滤吗</li>
+</ul>
+</li>
+<li>答
+<ul>
+<li>是的，你可以使用 <code class="notranslate">top</code> 命令来过滤进程并找到特定进程ID为1058470的进程。在 <code class="notranslate">top</code> 命令界面中，按下 <code class="notranslate">O</code> 键（大写字母O）可以打开过滤器功能。然后输入 <strong><code class="notranslate">PID=1058470</code></strong> 并按下回车键。这将只显示具有进程ID为1058470的进程。</li>
+</ul>
+</li>
+</ul>
+<div class="highlight highlight-source-shell"><pre class="notranslate">top - 14:20:53 up 47 days,  5:54,  2 users,  load average: 0.00, 0.02, 0.02
+Tasks: 125 total,   1 running, 124 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.8 us,  1.5 sy,  0.0 ni, 97.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem <span class="pl-c1">:</span>   1685.0 total,    103.8 free,    827.4 used,    753.8 buff/cache
+MiB Swap:      0.0 total,      0.0 free,      0.0 used.    667.0 avail Mem 
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND                                                                                                                                       
+1058470 root      20   0 2971564 176756  28496 S   0.0  10.2   0:12.74 java  </pre></div>
+<h4>五.结束后台运行程序</h4>
+<p>结束后台运行的程序可以通过以下方法来实现：</p>
+<ol>
+<li>
+<p>使用 <code class="notranslate">ps</code> 命令查找程序的进程号（PID）：</p>
+<pre class="notranslate"><code class="notranslate">ps aux | grep &lt;程序名称&gt;
+</code></pre>
+<p>通过上述命令可以找到程序的 PID。</p>
+</li>
+<li>
+<p>使用 <code class="notranslate">kill</code> 命令结束程序：</p>
+<pre class="notranslate"><code class="notranslate">kill &lt;PID&gt;
+</code></pre>
+<p>或者使用强制结束的方式：</p>
+<pre class="notranslate"><code class="notranslate">kill -9 &lt;PID&gt;
+</code></pre>
+<p>使用以上命令可以向指定的进程发送信号，终止程序的运行。常用的信号包括：</p>
+<ul>
+<li>15（SIGTERM）：这是默认的终止信号，程序可以捕获并进行清理操作。</li>
+<li>9（SIGKILL）：这个信号会立即终止进程，进程无法捕获并处理该信号。</li>
+</ul>
+</li>
+</ol>
+<p>另外，如果程序是后台运行的，并且你是通过 <code class="notranslate">nohup</code> 的方式运行的，也可以直接使用 <code class="notranslate">killall</code> 命令结束程序：</p>
+<pre class="notranslate"><code class="notranslate">killall &lt;程序名称&gt;
+</code></pre>
+<p>需要注意的是，在使用 <code class="notranslate">kill</code> 或 <code class="notranslate">killall</code> 命令结束程序时要小心，确保你终止的是正确的进程，避免误操作导致数据丢失或系统异常。</p>
+<p><a href="https://blog.csdn.net/qq_41895003/article/details/105261596" rel="nofollow">参考文章</a></p></div>
+<div style="font-size:small;margin-top:8px;float:right;"></div>
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+</div>
+    <div id="footer">Copyright © <span id="year"></span><a href="https://leyuan123.github.io"> 个人博客 </a>
+<p>
+<span id="runday"></span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a>
+</p>
+
+<script>
+if("06/22/2024"!=""){
+    var now=new Date();
+    var startSite=new Date("06/22/2024");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("year").innerHTML=now.getFullYear();
+    if(""!=""){document.getElementById("runday").innerHTML=" • "+"网站运行"+diffDay+"天"+" • ";}
+    else{document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";}
+}
+</script>
+</div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n\n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","leyuan123/leyuan123.github.io");
+    script.setAttribute("issue-term","title");
+    
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
+    else{script.setAttribute("theme","preferred-color-scheme");}
+    
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
+}
+
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
+            console.log("utterances Load OK");
+        }
+    }
+}
+</script>
+
+
+</html>
