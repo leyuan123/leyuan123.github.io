@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="//cdn.staticfile.net/Primer/21.0.7/primer.css" rel="stylesheet" />
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/126044735?v=4"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="### 接收 JSON 数据到对象
+
+> 你可以将请求体中的 JSON 数据直接映射到一个 Java 对象
+
+- 前端代码
+
+~~~ javascript
+axios.post('https://yapi.pro/mock/356423/student/p1', {
+    id: '2002',
+    name: 'John Doe',
+    age: 20,
+    gender: 'Male',
+    result: 'A'
+}).then((result) => {
+    alter('success');
+}).catch((error) => {
+    alter.('error');
+});
+~~~
+
+- 后端controller代码
+
+~~~java
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping('/student')
+public class StudentController {
+
+    @Autowired
+    private StudentService studentService;
+
+    @PostMapping('/p1')
+    public Result getStudent(@RequestBody Student request) {
+        
+        return Result.success();
+    }
+}
+
+~~~
+
+### 使用 `@RequestParam` 接收 URL 参数
+
+> **如果数据是通过 URL 参数传递的**，你可以使用 `@RequestParam` 注解
+
+- 前端代码
+
+~~~javascript
+axios.get('https://yapi.pro/mock/356423/student/p1', {
+    params: {
+        id: '2002'
+    }
+}).then((result) => {
+    alter('success');
+}).catch((error) => {
+    alter.('error');
+});
+~~~
+
+- 后端controller代码
+
+~~~java
+@RestController
+@RequestMapping('/student')
+public class StudentController {
+
+    @Autowired
+    private StudentService studentService;
+
+    @GetMapping('/p1')
+    public Reuslt getStudent(@RequestParam String id) {
+        
+        return Reuslt.success();
+    }
+}
+~~~
+
+###  使用 `@PathVariable` 接收路径变量
+
+> **如果数据是通过 URL 路径传递的**，你可以使用 `@PathVariable` 注解
+
+- 前端代码
+
+~~~javascript
+axios.get(`https://yapi.pro/mock/356423/student/p1/2002`).then((result) => {
+    alter('success');
+}).catch((error) => {
+    alter('error');
+});
+~~~
+
+- 后端controller代码
+
+~~~java
+@RestController
+@RequestMapping('/student')
+public class StudentController {
+
+    @Autowired
+    private StudentService studentService;
+
+    @GetMapping('/p1/{id}')
+    public Reuslt getStudent(@PathVariable String id) {
+        
+        return Reuslt.success();
+    }
+}
+~~~
+
+### 使用 `@ModelAttribute` 接收表单数据
+
+> **如果数据是通过表单提交的**，你可以使用 `@ModelAttribute` 注解
+
+- 前端代码
+
+~~~javascript
+const formData = new FormData();
+formData.append('id', '2002');
+formData.append('name', 'John Doe');
+formData.append('age', 20);
+formData.append('gender', 'Male');
+formData.append('result', 'A');
+
+axios.post('https://yapi.pro/mock/356423/student/p1', formData).then((result) => {
+    alter('success');
+}).catch((error) => {
+    alter('error');
+});
+~~~
+
+- 后端controller代码
+
+~~~java
+@RestController
+@RequestMapping('/student')
+public class StudentController {
+
+    @Autowired
+    private StudentService studentService;
+
+    @PostMapping('/p1')
+    public Reuslt getStudent(@ModelAttribute Student request) {
+        
+        return Reuslt.success();
+    }
+}
+~~~
+
+### get
+
+如果你要发送一个带有路径参数的 `GET` 请求来根据 `id` 查询特定资源，可以直接将 `id` 作为路径的一部分，并使用 `axios.get` 发送请求。">
+<meta property="og:title" content="关于axios的get&put&post&delete请求">
+<meta property="og:description" content="### 接收 JSON 数据到对象
+
+> 你可以将请求体中的 JSON 数据直接映射到一个 Java 对象
+
+- 前端代码
+
+~~~ javascript
+axios.post('https://yapi.pro/mock/356423/student/p1', {
+    id: '2002',
+    name: 'John Doe',
+    age: 20,
+    gender: 'Male',
+    result: 'A'
+}).then((result) => {
+    alter('success');
+}).catch((error) => {
+    alter.('error');
+});
+~~~
+
+- 后端controller代码
+
+~~~java
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping('/student')
+public class StudentController {
+
+    @Autowired
+    private StudentService studentService;
+
+    @PostMapping('/p1')
+    public Result getStudent(@RequestBody Student request) {
+        
+        return Result.success();
+    }
+}
+
+~~~
+
+### 使用 `@RequestParam` 接收 URL 参数
+
+> **如果数据是通过 URL 参数传递的**，你可以使用 `@RequestParam` 注解
+
+- 前端代码
+
+~~~javascript
+axios.get('https://yapi.pro/mock/356423/student/p1', {
+    params: {
+        id: '2002'
+    }
+}).then((result) => {
+    alter('success');
+}).catch((error) => {
+    alter.('error');
+});
+~~~
+
+- 后端controller代码
+
+~~~java
+@RestController
+@RequestMapping('/student')
+public class StudentController {
+
+    @Autowired
+    private StudentService studentService;
+
+    @GetMapping('/p1')
+    public Reuslt getStudent(@RequestParam String id) {
+        
+        return Reuslt.success();
+    }
+}
+~~~
+
+###  使用 `@PathVariable` 接收路径变量
+
+> **如果数据是通过 URL 路径传递的**，你可以使用 `@PathVariable` 注解
+
+- 前端代码
+
+~~~javascript
+axios.get(`https://yapi.pro/mock/356423/student/p1/2002`).then((result) => {
+    alter('success');
+}).catch((error) => {
+    alter('error');
+});
+~~~
+
+- 后端controller代码
+
+~~~java
+@RestController
+@RequestMapping('/student')
+public class StudentController {
+
+    @Autowired
+    private StudentService studentService;
+
+    @GetMapping('/p1/{id}')
+    public Reuslt getStudent(@PathVariable String id) {
+        
+        return Reuslt.success();
+    }
+}
+~~~
+
+### 使用 `@ModelAttribute` 接收表单数据
+
+> **如果数据是通过表单提交的**，你可以使用 `@ModelAttribute` 注解
+
+- 前端代码
+
+~~~javascript
+const formData = new FormData();
+formData.append('id', '2002');
+formData.append('name', 'John Doe');
+formData.append('age', 20);
+formData.append('gender', 'Male');
+formData.append('result', 'A');
+
+axios.post('https://yapi.pro/mock/356423/student/p1', formData).then((result) => {
+    alter('success');
+}).catch((error) => {
+    alter('error');
+});
+~~~
+
+- 后端controller代码
+
+~~~java
+@RestController
+@RequestMapping('/student')
+public class StudentController {
+
+    @Autowired
+    private StudentService studentService;
+
+    @PostMapping('/p1')
+    public Reuslt getStudent(@ModelAttribute Student request) {
+        
+        return Reuslt.success();
+    }
+}
+~~~
+
+### get
+
+如果你要发送一个带有路径参数的 `GET` 请求来根据 `id` 查询特定资源，可以直接将 `id` 作为路径的一部分，并使用 `axios.get` 发送请求。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://leyuan123.github.io/post/guan-yu-axios-de-get%26put%26post%26delete-qing-qiu.html">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/126044735?v=4">
+<title>关于axios的get&put&post&delete请求</title>
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+</style>
+
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">关于axios的get&put&post&delete请求</h1>
+<div class="title-right">
+    <a href="https://leyuan123.github.io" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/leyuan123/leyuan123.github.io/issues/6" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><h3>接收 JSON 数据到对象</h3>
+<blockquote>
+<p>你可以将请求体中的 JSON 数据直接映射到一个 Java 对象</p>
+</blockquote>
+<ul>
+<li>前端代码</li>
+</ul>
+<div class="highlight highlight-source-js"><pre class="notranslate"><span class="pl-s1">axios</span><span class="pl-kos">.</span><span class="pl-en">post</span><span class="pl-kos">(</span><span class="pl-s">"https://yapi.pro/mock/356423/student/p1"</span><span class="pl-kos">,</span> <span class="pl-kos">{</span>
+    <span class="pl-c1">id</span>: <span class="pl-s">'2002'</span><span class="pl-kos">,</span>
+    <span class="pl-c1">name</span>: <span class="pl-s">'John Doe'</span><span class="pl-kos">,</span>
+    <span class="pl-c1">age</span>: <span class="pl-c1">20</span><span class="pl-kos">,</span>
+    <span class="pl-c1">gender</span>: <span class="pl-s">'Male'</span><span class="pl-kos">,</span>
+    <span class="pl-c1">result</span>: <span class="pl-s">'A'</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">.</span><span class="pl-en">then</span><span class="pl-kos">(</span><span class="pl-kos">(</span><span class="pl-s1">result</span><span class="pl-kos">)</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">{</span>
+    <span class="pl-en">alter</span><span class="pl-kos">(</span><span class="pl-s">"success"</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">.</span><span class="pl-en">catch</span><span class="pl-kos">(</span><span class="pl-kos">(</span><span class="pl-s1">error</span><span class="pl-kos">)</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">{</span>
+    <span class="pl-en">alter</span><span class="pl-kos">.</span><span class="pl-kos">(</span><span class="pl-s">"error"</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">;</span></pre></div>
+<ul>
+<li>后端controller代码</li>
+</ul>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">import</span> <span class="pl-s1">org</span>.<span class="pl-s1">springframework</span>.<span class="pl-s1">web</span>.<span class="pl-s1">bind</span>.<span class="pl-s1">annotation</span>.*;
+
+<span class="pl-c1">@</span><span class="pl-c1">RestController</span>
+<span class="pl-c1">@</span><span class="pl-c1">RequestMapping</span>(<span class="pl-s">"/student"</span>)
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">StudentController</span> {
+
+    <span class="pl-c1">@</span><span class="pl-c1">Autowired</span>
+    <span class="pl-k">private</span> <span class="pl-smi">StudentService</span> <span class="pl-s1">studentService</span>;
+
+    <span class="pl-c1">@</span><span class="pl-c1">PostMapping</span>(<span class="pl-s">"/p1"</span>)
+    <span class="pl-k">public</span> <span class="pl-smi">Result</span> <span class="pl-en">getStudent</span>(<span class="pl-c1">@</span><span class="pl-c1">RequestBody</span> <span class="pl-smi">Student</span> <span class="pl-s1">request</span>) {
+        
+        <span class="pl-k">return</span> <span class="pl-smi">Result</span>.<span class="pl-en">success</span>();
+    }
+}</pre></div>
+<h3>使用 <code class="notranslate">@RequestParam</code> 接收 URL 参数</h3>
+<blockquote>
+<p><strong>如果数据是通过 URL 参数传递的</strong>，你可以使用 <code class="notranslate">@RequestParam</code> 注解</p>
+</blockquote>
+<ul>
+<li>前端代码</li>
+</ul>
+<div class="highlight highlight-source-js"><pre class="notranslate"><span class="pl-s1">axios</span><span class="pl-kos">.</span><span class="pl-en">get</span><span class="pl-kos">(</span><span class="pl-s">"https://yapi.pro/mock/356423/student/p1"</span><span class="pl-kos">,</span> <span class="pl-kos">{</span>
+    <span class="pl-c1">params</span>: <span class="pl-kos">{</span>
+        <span class="pl-c1">id</span>: <span class="pl-s">'2002'</span>
+    <span class="pl-kos">}</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">.</span><span class="pl-en">then</span><span class="pl-kos">(</span><span class="pl-kos">(</span><span class="pl-s1">result</span><span class="pl-kos">)</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">{</span>
+    <span class="pl-en">alter</span><span class="pl-kos">(</span><span class="pl-s">"success"</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">.</span><span class="pl-en">catch</span><span class="pl-kos">(</span><span class="pl-kos">(</span><span class="pl-s1">error</span><span class="pl-kos">)</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">{</span>
+    <span class="pl-en">alter</span><span class="pl-kos">.</span><span class="pl-kos">(</span><span class="pl-s">"error"</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">;</span></pre></div>
+<ul>
+<li>后端controller代码</li>
+</ul>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">RestController</span>
+<span class="pl-c1">@</span><span class="pl-c1">RequestMapping</span>(<span class="pl-s">"/student"</span>)
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">StudentController</span> {
+
+    <span class="pl-c1">@</span><span class="pl-c1">Autowired</span>
+    <span class="pl-k">private</span> <span class="pl-smi">StudentService</span> <span class="pl-s1">studentService</span>;
+
+    <span class="pl-c1">@</span><span class="pl-c1">GetMapping</span>(<span class="pl-s">"/p1"</span>)
+    <span class="pl-k">public</span> <span class="pl-smi">Reuslt</span> <span class="pl-en">getStudent</span>(<span class="pl-c1">@</span><span class="pl-c1">RequestParam</span> <span class="pl-smi">String</span> <span class="pl-s1">id</span>) {
+        
+        <span class="pl-k">return</span> <span class="pl-smi">Reuslt</span>.<span class="pl-en">success</span>();
+    }
+}</pre></div>
+<h3>使用 <code class="notranslate">@PathVariable</code> 接收路径变量</h3>
+<blockquote>
+<p><strong>如果数据是通过 URL 路径传递的</strong>，你可以使用 <code class="notranslate">@PathVariable</code> 注解</p>
+</blockquote>
+<ul>
+<li>前端代码</li>
+</ul>
+<div class="highlight highlight-source-js"><pre class="notranslate"><span class="pl-s1">axios</span><span class="pl-kos">.</span><span class="pl-en">get</span><span class="pl-kos">(</span><span class="pl-s">`https://yapi.pro/mock/356423/student/p1/2002`</span><span class="pl-kos">)</span><span class="pl-kos">.</span><span class="pl-en">then</span><span class="pl-kos">(</span><span class="pl-kos">(</span><span class="pl-s1">result</span><span class="pl-kos">)</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">{</span>
+    <span class="pl-en">alter</span><span class="pl-kos">(</span><span class="pl-s">"success"</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">.</span><span class="pl-en">catch</span><span class="pl-kos">(</span><span class="pl-kos">(</span><span class="pl-s1">error</span><span class="pl-kos">)</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">{</span>
+    <span class="pl-en">alter</span><span class="pl-kos">(</span><span class="pl-s">"error"</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">;</span></pre></div>
+<ul>
+<li>后端controller代码</li>
+</ul>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">RestController</span>
+<span class="pl-c1">@</span><span class="pl-c1">RequestMapping</span>(<span class="pl-s">"/student"</span>)
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">StudentController</span> {
+
+    <span class="pl-c1">@</span><span class="pl-c1">Autowired</span>
+    <span class="pl-k">private</span> <span class="pl-smi">StudentService</span> <span class="pl-s1">studentService</span>;
+
+    <span class="pl-c1">@</span><span class="pl-c1">GetMapping</span>(<span class="pl-s">"/p1/{id}"</span>)
+    <span class="pl-k">public</span> <span class="pl-smi">Reuslt</span> <span class="pl-en">getStudent</span>(<span class="pl-c1">@</span><span class="pl-c1">PathVariable</span> <span class="pl-smi">String</span> <span class="pl-s1">id</span>) {
+        
+        <span class="pl-k">return</span> <span class="pl-smi">Reuslt</span>.<span class="pl-en">success</span>();
+    }
+}</pre></div>
+<h3>使用 <code class="notranslate">@ModelAttribute</code> 接收表单数据</h3>
+<blockquote>
+<p><strong>如果数据是通过表单提交的</strong>，你可以使用 <code class="notranslate">@ModelAttribute</code> 注解</p>
+</blockquote>
+<ul>
+<li>前端代码</li>
+</ul>
+<div class="highlight highlight-source-js"><pre class="notranslate"><span class="pl-k">const</span> <span class="pl-s1">formData</span> <span class="pl-c1">=</span> <span class="pl-k">new</span> <span class="pl-v">FormData</span><span class="pl-kos">(</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-s1">formData</span><span class="pl-kos">.</span><span class="pl-en">append</span><span class="pl-kos">(</span><span class="pl-s">'id'</span><span class="pl-kos">,</span> <span class="pl-s">'2002'</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-s1">formData</span><span class="pl-kos">.</span><span class="pl-en">append</span><span class="pl-kos">(</span><span class="pl-s">'name'</span><span class="pl-kos">,</span> <span class="pl-s">'John Doe'</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-s1">formData</span><span class="pl-kos">.</span><span class="pl-en">append</span><span class="pl-kos">(</span><span class="pl-s">'age'</span><span class="pl-kos">,</span> <span class="pl-c1">20</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-s1">formData</span><span class="pl-kos">.</span><span class="pl-en">append</span><span class="pl-kos">(</span><span class="pl-s">'gender'</span><span class="pl-kos">,</span> <span class="pl-s">'Male'</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-s1">formData</span><span class="pl-kos">.</span><span class="pl-en">append</span><span class="pl-kos">(</span><span class="pl-s">'result'</span><span class="pl-kos">,</span> <span class="pl-s">'A'</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+
+<span class="pl-s1">axios</span><span class="pl-kos">.</span><span class="pl-en">post</span><span class="pl-kos">(</span><span class="pl-s">"https://yapi.pro/mock/356423/student/p1"</span><span class="pl-kos">,</span> <span class="pl-s1">formData</span><span class="pl-kos">)</span><span class="pl-kos">.</span><span class="pl-en">then</span><span class="pl-kos">(</span><span class="pl-kos">(</span><span class="pl-s1">result</span><span class="pl-kos">)</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">{</span>
+    <span class="pl-en">alter</span><span class="pl-kos">(</span><span class="pl-s">"success"</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">.</span><span class="pl-en">catch</span><span class="pl-kos">(</span><span class="pl-kos">(</span><span class="pl-s1">error</span><span class="pl-kos">)</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">{</span>
+    <span class="pl-en">alter</span><span class="pl-kos">(</span><span class="pl-s">"error"</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">;</span></pre></div>
+<ul>
+<li>后端controller代码</li>
+</ul>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">RestController</span>
+<span class="pl-c1">@</span><span class="pl-c1">RequestMapping</span>(<span class="pl-s">"/student"</span>)
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">StudentController</span> {
+
+    <span class="pl-c1">@</span><span class="pl-c1">Autowired</span>
+    <span class="pl-k">private</span> <span class="pl-smi">StudentService</span> <span class="pl-s1">studentService</span>;
+
+    <span class="pl-c1">@</span><span class="pl-c1">PostMapping</span>(<span class="pl-s">"/p1"</span>)
+    <span class="pl-k">public</span> <span class="pl-smi">Reuslt</span> <span class="pl-en">getStudent</span>(<span class="pl-c1">@</span><span class="pl-c1">ModelAttribute</span> <span class="pl-smi">Student</span> <span class="pl-s1">request</span>) {
+        
+        <span class="pl-k">return</span> <span class="pl-smi">Reuslt</span>.<span class="pl-en">success</span>();
+    }
+}</pre></div>
+<h3>get</h3>
+<p>如果你要发送一个带有路径参数的 <code class="notranslate">GET</code> 请求来根据 <code class="notranslate">id</code> 查询特定资源，可以直接将 <code class="notranslate">id</code> 作为路径的一部分，并使用 <code class="notranslate">axios.get</code> 发送请求。这里是一个示例，展示如何发送这样的请求：</p>
+<h4>示例代码</h4>
+<p>假设你的 API 的 URL 是 <code class="notranslate">https://example.com/api/users/{id}</code>，你需要查询用户 ID 为 <code class="notranslate">123</code> 的信息。</p>
+<pre class="notranslate"><code class="notranslate">const userId = 123;
+const apiUrl = `https://example.com/api/users/${userId}`;
+
+axios.get(apiUrl)
+    .then(response =&gt; {
+        console.log('Response:', response.data);
+    })
+    .catch(error =&gt; {
+        console.error('Error:', error);
+    });
+</code></pre>
+<h4>解析</h4>
+<ol>
+<li>
+<p>URL：</p>
+<pre class="notranslate"><code class="notranslate">https://example.com/api/users/123
+</code></pre>
+<ul>
+<li>这里 <code class="notranslate">123</code> 是路径参数，表示用户的 ID。</li>
+</ul>
+</li>
+<li>
+<p><strong>没有配置对象</strong>：只发送基础的 <code class="notranslate">GET</code> 请求。</p>
+</li>
+</ol>
+<h4>示例总结</h4>
+<ul>
+<li><strong>路径参数</strong>：<code class="notranslate">userId</code> 被包含在 URL 中，用于指定资源路径。</li>
+</ul>
+<p>如果你还需要添加查询参数或其他配置，可以使用 <code class="notranslate">axios.get</code> 的第二个参数配置对象。例如，假设你还想添加一个查询参数 <code class="notranslate">status</code> 和一个请求头 <code class="notranslate">Authorization</code>：</p>
+<pre class="notranslate"><code class="notranslate">const userId = 123;
+const apiUrl = `https://example.com/api/users/${userId}`;
+
+axios.get(apiUrl, {
+    params: {
+        status: 'active'
+    },
+    headers: {
+        'Authorization': 'Bearer YOUR_ACCESS_TOKEN'
+    },
+    timeout: 5000  // 可选，设置请求超时时间为5秒
+})
+    .then(response =&gt; {
+        console.log('Response:', response.data);
+    })
+    .catch(error =&gt; {
+        console.error('Error:', error);
+    });
+</code></pre>
+<h4>解析</h4>
+<ol>
+<li>
+<p><strong>URL</strong>：<code class="notranslate">https://example.com/api/users/123</code></p>
+<ul>
+<li>这里 <code class="notranslate">123</code> 是路径参数，表示用户的 ID。</li>
+</ul>
+</li>
+<li>
+<p><strong>配置对象</strong>：</p>
+<pre class="notranslate"><code class="notranslate">{
+    params: {
+        status: 'active'  // 查询参数，将附加到 URL 上，最终的 URL 为 https://example.com/api/users/123?status=active
+    },
+    headers: {
+        'Authorization': 'Bearer YOUR_ACCESS_TOKEN'  // 请求头，通常用于身份验证
+    },
+    timeout: 5000  // 请求超时时间，单位为毫秒（5秒）
+}
+</code></pre>
+</li>
+</ol>
+<h4>示例总结</h4>
+<ul>
+<li><strong>路径参数</strong>：<code class="notranslate">userId</code> 被包含在 URL 中，用于指定资源路径。</li>
+<li><strong>查询参数</strong> (<code class="notranslate">params</code>)：<code class="notranslate">status=active</code> 被附加到 URL 上。</li>
+<li><strong>请求头</strong> (<code class="notranslate">headers</code>)：添加了 <code class="notranslate">Authorization</code> 头。</li>
+<li><strong>请求超时时间</strong> (<code class="notranslate">timeout</code>)：设置为 5000 毫秒（即 5 秒）。</li>
+</ul>
+<p>这段代码会发送一个 <code class="notranslate">GET</code> 请求到 <code class="notranslate">https://example.com/api/users/123?status=active</code>，并在请求头中包含授权令牌。如果请求成功，响应数据会在控制台输出；如果发生错误，错误信息会在控制台输出。</p>
+<h3>get和put请求的区别</h3>
+<pre lang="text" class="notranslate"><code class="notranslate">在 PUT 请求中，通常有一个请求体 data，并且可以通过 params 对象传递 URL 参数。与 GET 请求不同，PUT 请求的第二个参数是请求体，第三个参数是配置对象。
+即第三个参数相当于get的第二个参数
+</code></pre>
+<h4>示例</h4>
+<ul>
+<li>get</li>
+</ul>
+<div class="highlight highlight-source-js"><pre class="notranslate"><span class="pl-s1">axios</span><span class="pl-kos">.</span><span class="pl-en">get</span><span class="pl-kos">(</span><span class="pl-s">'https://example.com/api/resource'</span><span class="pl-kos">,</span> <span class="pl-kos">{</span>
+  <span class="pl-c1">params</span>: <span class="pl-kos">{</span>
+    <span class="pl-c1">id</span>: <span class="pl-c1">123</span>
+  <span class="pl-kos">}</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">.</span><span class="pl-en">then</span><span class="pl-kos">(</span><span class="pl-s1">response</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">{</span>
+  <span class="pl-smi">console</span><span class="pl-kos">.</span><span class="pl-en">log</span><span class="pl-kos">(</span><span class="pl-s1">response</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">.</span><span class="pl-en">catch</span><span class="pl-kos">(</span><span class="pl-s1">error</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">{</span>
+  <span class="pl-smi">console</span><span class="pl-kos">.</span><span class="pl-en">error</span><span class="pl-kos">(</span><span class="pl-s">'There was an error!'</span><span class="pl-kos">,</span> <span class="pl-s1">error</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">;</span></pre></div>
+<ul>
+<li>put</li>
+</ul>
+<div class="highlight highlight-source-js"><pre class="notranslate"><span class="pl-s1">axios</span><span class="pl-kos">.</span><span class="pl-en">put</span><span class="pl-kos">(</span><span class="pl-s">'https://example.com/api/resource'</span><span class="pl-kos">,</span> <span class="pl-kos">{</span>
+  <span class="pl-c">// request body data</span>
+  <span class="pl-c1">name</span>: <span class="pl-s">'New Name'</span>
+<span class="pl-kos">}</span><span class="pl-kos">,</span> <span class="pl-kos">{</span>
+  <span class="pl-c1">params</span>: <span class="pl-kos">{</span>
+    <span class="pl-c1">id</span>: <span class="pl-c1">123</span>
+  <span class="pl-kos">}</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">.</span><span class="pl-en">then</span><span class="pl-kos">(</span><span class="pl-s1">response</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">{</span>
+  <span class="pl-smi">console</span><span class="pl-kos">.</span><span class="pl-en">log</span><span class="pl-kos">(</span><span class="pl-s1">response</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">.</span><span class="pl-en">catch</span><span class="pl-kos">(</span><span class="pl-s1">error</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">{</span>
+  <span class="pl-smi">console</span><span class="pl-kos">.</span><span class="pl-en">error</span><span class="pl-kos">(</span><span class="pl-s">'There was an error!'</span><span class="pl-kos">,</span> <span class="pl-s1">error</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-c">//</span>
+<span class="pl-s1">axios</span><span class="pl-kos">.</span><span class="pl-en">put</span><span class="pl-kos">(</span><span class="pl-s">"https://yapi.pro/mock/356423/teacher/p2"</span><span class="pl-kos">,</span> <span class="pl-c1">null</span><span class="pl-kos">,</span> <span class="pl-kos">{</span>
+  <span class="pl-c1">params</span>: <span class="pl-kos">{</span>
+    <span class="pl-c1">TopicName</span>: <span class="pl-smi">this</span><span class="pl-kos">.</span><span class="pl-c1">TopicName</span>
+  <span class="pl-kos">}</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">.</span><span class="pl-en">then</span><span class="pl-kos">(</span><span class="pl-kos">(</span><span class="pl-s1">result</span><span class="pl-kos">)</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">{</span>
+  <span class="pl-en">alert</span><span class="pl-kos">(</span><span class="pl-s1">result</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+  <span class="pl-s1">row</span><span class="pl-kos">.</span><span class="pl-c1">topicName</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">.</span><span class="pl-c1">topicName</span><span class="pl-kos">;</span>
+  <span class="pl-s1">row</span><span class="pl-kos">.</span><span class="pl-c1">difficulty</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">.</span><span class="pl-c1">difficulty</span><span class="pl-kos">;</span>
+  <span class="pl-s1">row</span><span class="pl-kos">.</span><span class="pl-c1">topicInfo</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">.</span><span class="pl-c1">topicInfo</span><span class="pl-kos">;</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">.</span><span class="pl-en">catch</span><span class="pl-kos">(</span><span class="pl-kos">(</span><span class="pl-s1">error</span><span class="pl-kos">)</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">{</span>
+  <span class="pl-smi">console</span><span class="pl-kos">.</span><span class="pl-en">error</span><span class="pl-kos">(</span><span class="pl-s">"There was an error!"</span><span class="pl-kos">,</span> <span class="pl-s1">error</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">;</span></pre></div>
+<h4>示例解释</h4>
+<ol>
+<li>
+<p><strong>URL</strong>：<code class="notranslate">https://yapi.pro/mock/356423/teacher/p2</code>。</p>
+</li>
+<li>
+<p><strong>请求体</strong>：由于没有请求体数据，传递 <code class="notranslate">null</code>。</p>
+<ul>
+<li>这是发送到服务器的实际数据。在 <code class="notranslate">PUT</code> 请求中，这通常是你想要更新的资源的新数据。你可以在这里传递一个 JavaScript 对象，<code class="notranslate">axios</code> 会自动将其转换为 JSON 格式发送。</li>
+</ul>
+</li>
+<li>
+<p>配置对象</p>
+<ul>
+<li>
+<p><code class="notranslate">params</code> 对象中的参数 <code class="notranslate">TopicName</code> 会被添加到 URL 的查询字符串中。</p>
+</li>
+<li>
+<p>这个参数是一个配置对象，允许你配置请求的各种选项，例如 URL 参数（query parameters）、请求头（headers）、超时（timeout）等。</p>
+</li>
+<li>
+<p>下面是一个使用 <code class="notranslate">axios</code> 发送 <code class="notranslate">PUT</code> 请求的例子，其中包括了配置对象，配置了各种选项，例如 URL 参数（query parameters）、请求头（headers）、和超时（timeout）。</p>
+<pre class="notranslate"><code class="notranslate">axios.put("https://example.com/api/resource", {
+    // 请求主体数据
+    name: "New Name",
+    description: "Updated Description"
+}, {
+    // 配置对象
+    params: {
+        id: 123  // URL 查询参数
+    },
+    headers: {
+        'Authorization': 'Bearer YOUR_ACCESS_TOKEN',  // 请求头
+        'Content-Type': 'application/json'
+    },
+    timeout: 5000  // 请求超时时间，单位为毫秒
+})
+.then(response =&gt; {
+    console.log('Response:', response.data);
+})
+.catch(error =&gt; {
+    console.error('Error:', error);
+});
+</code></pre>
+<h3>解析</h3>
+<ol>
+<li>
+<p><strong>URL</strong>：<code class="notranslate">https://example.com/api/resource</code></p>
+</li>
+<li>
+<p>请求主体数据：</p>
+<pre class="notranslate"><code class="notranslate">{
+    name: "New Name",
+    description: "Updated Description"
+}
+</code></pre>
+</li>
+<li>
+<p>配置对象：</p>
+<pre class="notranslate"><code class="notranslate">{
+    params: {
+        id: 123  // 将附加到 URL 上，最终的 URL 为 https://example.com/api/resource?id=123
+    },
+    headers: {
+        'Authorization': 'Bearer YOUR_ACCESS_TOKEN',  // 请求头，通常用于身份验证
+        'Content-Type': 'application/json'  // 请求的内容类型，默认为 JSON
+    },
+    timeout: 5000  // 请求超时时间，单位为毫秒（5秒）
+}
+</code></pre>
+</li>
+</ol>
+<h3>示例总结</h3>
+<ul>
+<li><strong>URL 查询参数</strong> (<code class="notranslate">params</code>): <code class="notranslate">id=123</code> 将被附加到 URL 上。</li>
+<li><strong>请求头</strong> (<code class="notranslate">headers</code>): 添加了 <code class="notranslate">Authorization</code> 和 <code class="notranslate">Content-Type</code> 头。</li>
+<li><strong>请求超时时间</strong> (<code class="notranslate">timeout</code>): 设置为 5000 毫秒（即 5 秒）。</li>
+</ul>
+<p>这个例子展示了如何使用 <code class="notranslate">axios</code> 的配置对象来配置 <code class="notranslate">PUT</code> 请求的各种选项，包括 URL 查询参数、请求头和超时设置。如果服务器返回响应，则会在控制台输出响应数据；如果发生错误，则会在控制台输出错误信息。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3>delete请求</h3>
+<p>使用 Axios 发送 DELETE 请求的方法与发送其他类型的请求类似，但需要注意 DELETE 请求通常不会发送请求体（body），而是通过 URL 参数传递信息。下面是一个基本的示例：</p>
+<pre class="notranslate"><code class="notranslate">axios.delete('https://api.example.com/resource', {
+  params: {
+    id: '12345'
+  }
+}).then((response) =&gt; {
+  console.log('Deleted successfully');
+}).catch((error) =&gt; {
+  console.error('Error deleting:', error);
+});
+</code></pre>
+<h4>解释代码：</h4>
+<ol>
+<li><strong><code class="notranslate">axios.delete</code> 方法</strong>：用于发送 DELETE 请求。</li>
+<li><strong>URL</strong>：指定要删除的资源的 URL。例如，<code class="notranslate">'https://api.example.com/resource'</code> 是一个示例 URL。</li>
+<li><strong>配置对象</strong>：
+<ul>
+<li><strong><code class="notranslate">params</code></strong>：指定 URL 查询参数。在 DELETE 请求中，通常会把需要删除的资源的标识（如 ID）通过 URL 参数传递给服务器。</li>
+</ul>
+</li>
+<li><strong><code class="notranslate">.then</code> 和 <code class="notranslate">.catch</code></strong>：处理异步操作的成功和失败情况。</li>
+</ol>
+<p>在上面的示例中，<code class="notranslate">params</code> 对象中的 <code class="notranslate">id: '12345'</code> 将作为 URL 的查询参数，添加到 DELETE 请求中。服务器端可以根据这些参数来识别和删除相应的资源。</p>
+<h4>注意事项：</h4>
+<p>在 <code class="notranslate">axios</code> 中，<code class="notranslate">axios.delete</code> 方法的第二个参数是配置对象，不是请求体。这与 <code class="notranslate">axios.post</code> 和 <code class="notranslate">axios.put</code> 不同，后者的第二个参数是请求体数据，第三个参数是配置对象。</p>
+<p>具体来说，当你在 <code class="notranslate">axios.delete</code> 方法中传递第二个参数时，它是配置对象，包含 URL 查询参数、请求头等。</p>
+<h4>例子</h4>
+<p>假设你要发送一个带有查询参数的 <code class="notranslate">DELETE</code> 请求，并且配置对象包含 <code class="notranslate">params</code>，则代码如下：</p>
+<pre class="notranslate"><code class="notranslate">axios.delete('https://api.example.com/resource', {
+  params: {
+    id: '12345'
+  }
+})
+.then(response =&gt; {
+  console.log('Response:', response.data);
+})
+.catch(error =&gt; {
+  console.error('Error:', error);
+});
+</code></pre>
+<h4>解析</h4>
+<ul>
+<li>
+<p><strong>URL</strong>：<code class="notranslate">https://api.example.com/resource</code></p>
+</li>
+<li>
+<p>配置对象：</p>
+<pre class="notranslate"><code class="notranslate">{
+  params: {
+    id: '12345'  // 查询参数，将附加到 URL 上，最终的 URL 为 https://api.example.com/resource?id=12345
+  }
+}
+</code></pre>
+</li>
+</ul>
+<p>这个代码发送一个 <code class="notranslate">DELETE</code> 请求到 <code class="notranslate">https://api.example.com/resource?id=12345</code>，没有请求体。</p>
+<h4>确认省略的是配置参数</h4>
+<p>在 <code class="notranslate">axios.delete</code> 请求中，没有专门用于请求体的参数。第二个参数总是配置对象。这意味着当你传递一个对象作为第二个参数时，<code class="notranslate">axios</code> 将其视为配置对象，包含查询参数、请求头等。</p>
+<h4>扩展：带有请求头的 DELETE 请求</h4>
+<p>如果你想要在 <code class="notranslate">DELETE</code> 请求中添加请求头，可以在配置对象中添加 <code class="notranslate">headers</code>：</p>
+<pre class="notranslate"><code class="notranslate">axios.delete('https://api.example.com/resource', {
+  params: {
+    id: '12345'
+  },
+  headers: {
+    'Authorization': 'Bearer YOUR_ACCESS_TOKEN'
+  }
+})
+.then(response =&gt; {
+  console.log('Response:', response.data);
+})
+.catch(error =&gt; {
+  console.error('Error:', error);
+});
+</code></pre>
+<h4>例子总结</h4>
+<ul>
+<li><strong>配置对象</strong>：用于设置查询参数（<code class="notranslate">params</code>）、请求头（<code class="notranslate">headers</code>）等。</li>
+<li><strong>没有请求体</strong>：<code class="notranslate">axios.delete</code> 不支持直接传递请求体数据，所有配置都是通过第二个参数的配置对象完成的。</li>
+</ul>
+<p>这样可以明确地看出，在 <code class="notranslate">axios.delete</code> 请求中，第二个参数始终是配置对象，不是请求体。</p>
+<h3>注意返回数据的利用</h3>
+<div class="highlight highlight-source-json"><pre class="notranslate">{
+  <span class="pl-ii">code: 0,</span>
+  <span class="pl-ii">msg: 'success',</span>
+  <span class="pl-ii">data: [</span>
+    {
+      <span class="pl-ii">topicName: '计算机',</span>
+      <span class="pl-ii">difficulty: 'easy',</span>
+      <span class="pl-ii">topicInfo: 'hello'</span>
+    }
+  <span class="pl-ii">]</span>
+}
+</pre></div>
+<p>错误访问data</p>
+<div class="highlight highlight-source-js"><pre class="notranslate"><span class="pl-s1">axios</span><span class="pl-kos">.</span><span class="pl-en">put</span><span class="pl-kos">(</span><span class="pl-s">"https://yapi.pro/mock/356423/teacher/p2"</span><span class="pl-kos">,</span><span class="pl-kos">{</span>
+    <span class="pl-c1">TopicName</span>: <span class="pl-s1">row</span><span class="pl-kos">.</span><span class="pl-c1">TopicName</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">.</span><span class="pl-en">then</span><span class="pl-kos">(</span><span class="pl-kos">(</span><span class="pl-s1">result</span><span class="pl-kos">)</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">{</span>
+    <span class="pl-smi">console</span><span class="pl-kos">.</span><span class="pl-en">log</span><span class="pl-kos">(</span><span class="pl-s1">result</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">[</span><span class="pl-c1">0</span><span class="pl-kos">]</span><span class="pl-kos">.</span><span class="pl-c1">topicName</span><span class="pl-kos">)</span><span class="pl-kos">;</span> <span class="pl-c">// 访问数组第一个元素的 topicName 属性</span>
+    <span class="pl-c">// 如果需要赋值给 row 对象</span>
+    <span class="pl-s1">row</span><span class="pl-kos">.</span><span class="pl-c1">topicName</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">.</span><span class="pl-c1">topicName</span><span class="pl-kos">;</span>
+    <span class="pl-s1">row</span><span class="pl-kos">.</span><span class="pl-c1">difficulty</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">.</span><span class="pl-c1">difficulty</span><span class="pl-kos">;</span>
+    <span class="pl-s1">row</span><span class="pl-kos">.</span><span class="pl-c1">topicInfo</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">.</span><span class="pl-c1">topicInfo</span><span class="pl-kos">;</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">.</span><span class="pl-en">catch</span><span class="pl-kos">(</span><span class="pl-kos">(</span><span class="pl-s1">error</span><span class="pl-kos">)</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">{</span>
+    <span class="pl-smi">console</span><span class="pl-kos">.</span><span class="pl-en">error</span><span class="pl-kos">(</span><span class="pl-s">"There was an error!"</span><span class="pl-kos">,</span> <span class="pl-s1">error</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">;</span></pre></div>
+<p>正确访问data</p>
+<p>根据这个结构，<code class="notranslate">result.data.data</code> 是一个数组，其中包含一个对象，对象的属性包括 <code class="notranslate">topicName</code>、<code class="notranslate">difficulty</code> 和 <code class="notranslate">topicInfo</code>。因此，要访问 <code class="notranslate">topicName</code>，需要通过数组索引访问</p>
+<div class="highlight highlight-source-js"><pre class="notranslate"><span class="pl-s1">axios</span><span class="pl-kos">.</span><span class="pl-en">put</span><span class="pl-kos">(</span><span class="pl-s">"https://yapi.pro/mock/356423/teacher/p2"</span><span class="pl-kos">,</span><span class="pl-kos">{</span>
+    <span class="pl-c1">TopicName</span>: <span class="pl-s1">row</span><span class="pl-kos">.</span><span class="pl-c1">TopicName</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">.</span><span class="pl-en">then</span><span class="pl-kos">(</span><span class="pl-kos">(</span><span class="pl-s1">result</span><span class="pl-kos">)</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">{</span>
+    <span class="pl-smi">console</span><span class="pl-kos">.</span><span class="pl-en">log</span><span class="pl-kos">(</span><span class="pl-s1">result</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">[</span><span class="pl-c1">0</span><span class="pl-kos">]</span><span class="pl-kos">.</span><span class="pl-c1">topicName</span><span class="pl-kos">)</span><span class="pl-kos">;</span> <span class="pl-c">// 访问数组第一个元素的 topicName 属性</span>
+    <span class="pl-c">// 如果需要赋值给 row 对象</span>
+    <span class="pl-s1">row</span><span class="pl-kos">.</span><span class="pl-c1">topicName</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">[</span><span class="pl-c1">0</span><span class="pl-kos">]</span><span class="pl-kos">.</span><span class="pl-c1">topicName</span><span class="pl-kos">;</span>
+    <span class="pl-s1">row</span><span class="pl-kos">.</span><span class="pl-c1">difficulty</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">[</span><span class="pl-c1">0</span><span class="pl-kos">]</span><span class="pl-kos">.</span><span class="pl-c1">difficulty</span><span class="pl-kos">;</span>
+    <span class="pl-s1">row</span><span class="pl-kos">.</span><span class="pl-c1">topicInfo</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">.</span><span class="pl-c1">data</span><span class="pl-kos">[</span><span class="pl-c1">0</span><span class="pl-kos">]</span><span class="pl-kos">.</span><span class="pl-c1">topicInfo</span><span class="pl-kos">;</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">.</span><span class="pl-en">catch</span><span class="pl-kos">(</span><span class="pl-kos">(</span><span class="pl-s1">error</span><span class="pl-kos">)</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">{</span>
+    <span class="pl-smi">console</span><span class="pl-kos">.</span><span class="pl-en">error</span><span class="pl-kos">(</span><span class="pl-s">"There was an error!"</span><span class="pl-kos">,</span> <span class="pl-s1">error</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+<span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">;</span></pre></div>
+<h3>示例</h3>
+<blockquote>
+<p>vue2 代码</p>
+</blockquote>
+<ul>
+<li>配置端口转发(vue.config.js)</li>
+</ul>
+<div class="highlight highlight-source-js"><pre class="notranslate"><span class="pl-smi">module</span><span class="pl-kos">.</span><span class="pl-c1">exports</span> <span class="pl-c1">=</span> <span class="pl-kos">{</span>
+  <span class="pl-c1">devServer</span>: <span class="pl-kos">{</span>
+    <span class="pl-c1">proxy</span>: <span class="pl-kos">{</span>
+      <span class="pl-s">'/api'</span>: <span class="pl-kos">{</span>
+        <span class="pl-c1">target</span>: <span class="pl-s">'http://localhost:8080'</span><span class="pl-kos">,</span> <span class="pl-c">// 你的后端服务器地址</span>
+        <span class="pl-c1">changeOrigin</span>: <span class="pl-c1">true</span><span class="pl-kos">,</span>
+        <span class="pl-c1">pathRewrite</span>: <span class="pl-kos">{</span>
+          <span class="pl-s">'^/api'</span>: <span class="pl-s">''</span>
+        <span class="pl-kos">}</span>
+      <span class="pl-kos">}</span>
+    <span class="pl-kos">}</span>
+  <span class="pl-kos">}</span>
+<span class="pl-kos">}</span></pre></div>
+<blockquote>
+<p><strong><code class="notranslate">target</code></strong>：指定代理的目标地址，即你的后端服务器地址和端口。</p>
+<p><strong><code class="notranslate">changeOrigin</code></strong>：如果需要，可以设置为 <code class="notranslate">true</code> 以更改请求头中的 <code class="notranslate">Host</code> 字段，使其与目标服务器匹配。</p>
+<p><strong><code class="notranslate">pathRewrite</code></strong>：用于重写请求路径。上面的例子中，<code class="notranslate">'^/api'</code> 被替换为空字符串，因此 <code class="notranslate">/api/employees</code> 将被代理到 <code class="notranslate">http://localhost:8080/employees</code>。</p>
+</blockquote>
+<ul>
+<li>注意</li>
+</ul>
+<pre lang="text" class="notranslate"><code class="notranslate">在 vue.config.js 中配置代理时，'^/api' 中的 ^ 符号是一个正则表达式的语法，表示匹配路径的开始。因此，'^/api' 表示只匹配以 /api 开头的路径。如果去掉 ^ 符号，路径中只要包含 /api 就会被匹配。
+
+是否需要 ^ 符号取决于你的需求。如果你想严格匹配以 /api 开头的路径，那么 ^ 是必要的。如果你希望匹配路径中包含 /api 的任何部分，那么可以去掉 ^ 符号。
+</code></pre>
+<div class="highlight highlight-text-html-vue"><pre class="notranslate">&lt;<span class="pl-ent">template</span>&gt;
+  &lt;<span class="pl-ent">div</span>&gt;
+    &lt;<span class="pl-ent">h1</span>&gt;员工分页查询&lt;/<span class="pl-ent">h1</span>&gt;
+    &lt;<span class="pl-ent">form</span> @<span class="pl-e">submit</span>.<span class="pl-e">prevent</span>=<span class="pl-s1"><span class="pl-pds">"</span>fetchData<span class="pl-pds">"</span></span>&gt;
+      &lt;<span class="pl-ent">label</span> <span class="pl-e">for</span>=<span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span>&gt;姓名:&lt;/<span class="pl-ent">label</span>&gt;
+      &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span> <span class="pl-e">v-model</span>=<span class="pl-s1"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span> /&gt;
+
+      &lt;<span class="pl-ent">label</span> <span class="pl-e">for</span>=<span class="pl-s"><span class="pl-pds">"</span>gender<span class="pl-pds">"</span></span>&gt;性别:&lt;/<span class="pl-ent">label</span>&gt;
+      &lt;<span class="pl-ent">select</span> <span class="pl-e">v-model</span>=<span class="pl-s1"><span class="pl-pds">"</span>gender<span class="pl-pds">"</span></span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>gender<span class="pl-pds">"</span></span>&gt;
+        &lt;<span class="pl-ent">option</span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>&gt;请选择&lt;/<span class="pl-ent">option</span>&gt;
+        &lt;<span class="pl-ent">option</span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>&gt;男&lt;/<span class="pl-ent">option</span>&gt;
+        &lt;<span class="pl-ent">option</span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">"</span>2<span class="pl-pds">"</span></span>&gt;女&lt;/<span class="pl-ent">option</span>&gt;
+      &lt;/<span class="pl-ent">select</span>&gt;
+
+      &lt;<span class="pl-ent">label</span> <span class="pl-e">for</span>=<span class="pl-s"><span class="pl-pds">"</span>begin<span class="pl-pds">"</span></span>&gt;开始日期:&lt;/<span class="pl-ent">label</span>&gt;
+      &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>date<span class="pl-pds">"</span></span> <span class="pl-e">v-model</span>=<span class="pl-s1"><span class="pl-pds">"</span>begin<span class="pl-pds">"</span></span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>begin<span class="pl-pds">"</span></span> /&gt;
+
+      &lt;<span class="pl-ent">label</span> <span class="pl-e">for</span>=<span class="pl-s"><span class="pl-pds">"</span>end<span class="pl-pds">"</span></span>&gt;结束日期:&lt;/<span class="pl-ent">label</span>&gt;
+      &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>date<span class="pl-pds">"</span></span> <span class="pl-e">v-model</span>=<span class="pl-s1"><span class="pl-pds">"</span>end<span class="pl-pds">"</span></span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>end<span class="pl-pds">"</span></span> /&gt;
+
+      &lt;<span class="pl-ent">button</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>submit<span class="pl-pds">"</span></span>&gt;查询&lt;/<span class="pl-ent">button</span>&gt;
+    &lt;/<span class="pl-ent">form</span>&gt;
+
+    &lt;<span class="pl-ent">div</span> <span class="pl-e">v-if</span>=<span class="pl-s1"><span class="pl-pds">"</span>pageBean<span class="pl-pds">"</span></span>&gt;
+      &lt;<span class="pl-ent">h2</span>&gt;查询结果&lt;/<span class="pl-ent">h2</span>&gt;
+      &lt;<span class="pl-ent">p</span>&gt;总记录数: {{ <span class="pl-smi">pageBean</span>.<span class="pl-smi">total</span> }}&lt;/<span class="pl-ent">p</span>&gt;
+      &lt;<span class="pl-ent">ul</span>&gt;
+        &lt;<span class="pl-ent">li</span> <span class="pl-e">v-for</span>=<span class="pl-s1"><span class="pl-pds">"</span>emp <span class="pl-k">in</span> <span class="pl-smi">pageBean</span>.<span class="pl-c1">data</span><span class="pl-pds">"</span></span> :<span class="pl-e">key</span>=<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-smi">emp</span>.<span class="pl-c1">id</span><span class="pl-pds">"</span></span>&gt;{{ <span class="pl-smi">emp</span>.<span class="pl-c1">name</span> }}&lt;/<span class="pl-ent">li</span>&gt;
+      &lt;/<span class="pl-ent">ul</span>&gt;
+    &lt;/<span class="pl-ent">div</span>&gt;
+  &lt;/<span class="pl-ent">div</span>&gt;
+&lt;/<span class="pl-ent">template</span>&gt;
+
+<span class="pl-s1">&lt;<span class="pl-ent">script</span>&gt;</span>
+<span class="pl-s1"><span class="pl-k">import</span> <span class="pl-smi">axios</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>axios<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">export</span> <span class="pl-c1">default</span> {</span>
+<span class="pl-s1">  <span class="pl-en">data</span>() {</span>
+<span class="pl-s1">    <span class="pl-k">return</span> {</span>
+<span class="pl-s1">      page<span class="pl-k">:</span> <span class="pl-c1">1</span>,</span>
+<span class="pl-s1">      pageSize<span class="pl-k">:</span> <span class="pl-c1">10</span>,</span>
+<span class="pl-s1">      name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">      gender<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">      begin<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">      end<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">      pageBean<span class="pl-k">:</span> <span class="pl-c1">null</span></span>
+<span class="pl-s1">    };</span>
+<span class="pl-s1">  },</span>
+<span class="pl-s1">  methods<span class="pl-k">:</span> {</span>
+<span class="pl-s1">    <span class="pl-en">fetchData</span>() {</span>
+<span class="pl-s1">      <span class="pl-smi">axios</span>.<span class="pl-c1">get</span>(<span class="pl-s"><span class="pl-pds">'</span>/api/employees<span class="pl-pds">'</span></span>, {</span>
+<span class="pl-s1">        params<span class="pl-k">:</span> {</span>
+<span class="pl-s1">          page<span class="pl-k">:</span> <span class="pl-c1">this</span>.<span class="pl-smi">page</span>,</span>
+<span class="pl-s1">          pageSize<span class="pl-k">:</span> <span class="pl-c1">this</span>.<span class="pl-smi">pageSize</span>,</span>
+<span class="pl-s1">          name<span class="pl-k">:</span> <span class="pl-c1">this</span>.<span class="pl-c1">name</span>,</span>
+<span class="pl-s1">          gender<span class="pl-k">:</span> <span class="pl-c1">this</span>.<span class="pl-smi">gender</span>,</span>
+<span class="pl-s1">          begin<span class="pl-k">:</span> <span class="pl-c1">this</span>.<span class="pl-smi">begin</span>,</span>
+<span class="pl-s1">          end<span class="pl-k">:</span> <span class="pl-c1">this</span>.<span class="pl-smi">end</span></span>
+<span class="pl-s1">        }</span>
+<span class="pl-s1">      })</span>
+<span class="pl-s1">      .<span class="pl-c1">then</span>(<span class="pl-smi">response</span> <span class="pl-k">=&gt;</span> {</span>
+<span class="pl-s1">        <span class="pl-c1">this</span>.<span class="pl-smi">pageBean</span> <span class="pl-k">=</span> <span class="pl-smi">response</span>.<span class="pl-c1">data</span>;</span>
+<span class="pl-s1">      })</span>
+<span class="pl-s1">      .<span class="pl-c1">catch</span>(<span class="pl-smi">error</span> <span class="pl-k">=&gt;</span> {</span>
+<span class="pl-s1">        <span class="pl-en">console</span>.<span class="pl-c1">error</span>(<span class="pl-s"><span class="pl-pds">"</span>There was an error!<span class="pl-pds">"</span></span>, error);</span>
+<span class="pl-s1">      });</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1">  }</span>
+<span class="pl-s1">};</span>
+<span class="pl-s1">&lt;/<span class="pl-ent">script</span>&gt;</span>
+
+<span class="pl-s1">&lt;<span class="pl-ent">style</span> <span class="pl-e">scoped</span>&gt;</span>
+<span class="pl-s1"><span class="pl-c"><span class="pl-c">/*</span> 样式可以根据需要进行调整 <span class="pl-c">*/</span></span></span>
+<span class="pl-s1"><span class="pl-ent">form</span> {</span>
+<span class="pl-s1">  <span class="pl-c1"><span class="pl-c1">margin-bottom</span></span>: <span class="pl-c1">20<span class="pl-k">px</span></span>;</span>
+<span class="pl-s1">}</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-ent">label</span> {</span>
+<span class="pl-s1">  <span class="pl-c1"><span class="pl-c1">display</span></span>: <span class="pl-c1">block</span>;</span>
+<span class="pl-s1">  <span class="pl-c1"><span class="pl-c1">margin</span></span>: <span class="pl-c1">5<span class="pl-k">px</span></span> <span class="pl-c1">0</span>;</span>
+<span class="pl-s1">}</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-ent">input</span>, <span class="pl-ent">select</span> {</span>
+<span class="pl-s1">  <span class="pl-c1"><span class="pl-c1">display</span></span>: <span class="pl-c1">block</span>;</span>
+<span class="pl-s1">  <span class="pl-c1"><span class="pl-c1">margin-bottom</span></span>: <span class="pl-c1">10<span class="pl-k">px</span></span>;</span>
+<span class="pl-s1">}</span>
+<span class="pl-s1">&lt;/<span class="pl-ent">style</span>&gt;</span>
+</pre></div>
+<ul>
+<li>关于'/api/employees'</li>
+</ul>
+<pre lang="text" class="notranslate"><code class="notranslate">在 Vue.js 或 JavaScript 中，URL 字符串通常使用单引号 ' 或双引号 "，两者是等价的，具体选择取决于个人或团队的编码风格和习惯。所以你可以将 '/api/employees' 改为 "/api/employees"，效果是一样的。
+</code></pre>
+<blockquote>
+<p>java代码</p>
+</blockquote>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">Slf4j</span>
+<span class="pl-c1">@</span><span class="pl-c1">RequestMapping</span>(<span class="pl-s">"/emps"</span>)
+<span class="pl-c1">@</span><span class="pl-c1">RestController</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">EmpController</span> {
+    <span class="pl-c1">@</span><span class="pl-c1">Autowired</span>
+    <span class="pl-k">private</span> <span class="pl-smi">EmpService</span> <span class="pl-s1">empService</span>;
+
+    <span class="pl-c1">@</span><span class="pl-c1">GetMapping</span>
+    <span class="pl-k">public</span> <span class="pl-smi">Result</span> <span class="pl-en">page</span>(<span class="pl-c1">@</span><span class="pl-c1">RequestParam</span>(<span class="pl-s1">defaultValue</span> = <span class="pl-s">"1"</span>) <span class="pl-smi">Integer</span> <span class="pl-s1">page</span>,
+                       <span class="pl-c1">@</span><span class="pl-c1">RequestParam</span>(<span class="pl-s1">defaultValue</span> = <span class="pl-s">"10"</span>) <span class="pl-smi">Integer</span> <span class="pl-s1">pageSize</span>, <span class="pl-smi">String</span> <span class="pl-s1">name</span>, <span class="pl-smi">Short</span> <span class="pl-s1">gender</span>,
+                       <span class="pl-c1">@</span><span class="pl-c1">DateTimeFormat</span>(<span class="pl-s1">pattern</span> = <span class="pl-s">"yyyy-MM-dd"</span>) <span class="pl-smi">LocalDate</span> <span class="pl-s1">begin</span>,
+                       <span class="pl-c1">@</span><span class="pl-c1">DateTimeFormat</span>(<span class="pl-s1">pattern</span> = <span class="pl-s">"yyyy-MM-dd"</span>) <span class="pl-smi">LocalDate</span> <span class="pl-s1">end</span>){
+
+        <span class="pl-s1">log</span>.<span class="pl-en">info</span>(<span class="pl-s">"分页查询,参数:{},{},{},{},{},{}"</span>,<span class="pl-s1">page</span>,<span class="pl-s1">pageSize</span>,<span class="pl-s1">name</span>,<span class="pl-s1">gender</span>,<span class="pl-s1">begin</span>,<span class="pl-s1">end</span>);
+        <span class="pl-c">//调用service分页查询</span>
+        <span class="pl-smi">PageBean</span> <span class="pl-s1">pageBean</span> = <span class="pl-s1">empService</span>.<span class="pl-en">page</span>(<span class="pl-s1">page</span>,<span class="pl-s1">pageSize</span>,<span class="pl-s1">name</span>,<span class="pl-s1">gender</span>,<span class="pl-s1">begin</span>,<span class="pl-s1">end</span>);
+        <span class="pl-k">return</span> <span class="pl-smi">Result</span>.<span class="pl-en">success</span>(<span class="pl-s1">pageBean</span>);
+    }
+}</pre></div></div>
+<div style="font-size:small;margin-top:8px;float:right;"></div>
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+</div>
+    <div id="footer">Copyright © <span id="year"></span><a href="https://leyuan123.github.io"> 个人博客 </a>
+<p>
+<span id="runday"></span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a>
+</p>
+
+<script>
+if("06/22/2024"!=""){
+    var now=new Date();
+    var startSite=new Date("06/22/2024");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("year").innerHTML=now.getFullYear();
+    if(""!=""){document.getElementById("runday").innerHTML=" • "+"网站运行"+diffDay+"天"+" • ";}
+    else{document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";}
+}
+</script>
+</div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n\n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","leyuan123/leyuan123.github.io");
+    script.setAttribute("issue-term","title");
+    
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
+    else{script.setAttribute("theme","preferred-color-scheme");}
+    
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
+}
+
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
+            console.log("utterances Load OK");
+        }
+    }
+}
+</script>
+
+
+</html>
