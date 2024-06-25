@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="//cdn.staticfile.net/Primer/21.0.7/primer.css" rel="stylesheet" />
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/126044735?v=4"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="### side + (header + main)
+
+基于vue2 + ElementUI
+
+完整代码
+
+~~~vue
+<template>
+  <div>
+    <el-container style='height: 100vh;'>
+        
+        <el-scrollbar wrap-style='overflow-x:hidden;'><!--滚动条-->
+        <!-- width='200px' 固定-->
+        <!-- :width='sideWidth + 'px''绑定变量 -->
+        <!-- box-shadow: 2px 0 6px rgb(0 21 41 / 35%);:侧边栏阴影效果 -->
+        <el-aside :width='sideWidth + 'px'' style='box-shadow: 2px 0 6px rgb(0 21 41 / 35%);'>
+        
+        <!-- active-text-color='#ffd04b':导航栏点击高亮 -->
+        <!-- overflow-x: hidden;: 解决导航栏左侧溢出导致参差不齐 -->
+        <!-- background-color='rgb(48,65,86)':侧边栏颜色 -->
+        <!-- :collapse-transition='false':关闭侧边栏自带的动画 -->
+        <!-- :collapse='isCollapse':折叠属性 -->
+        <!-- 属性要加在el-menu才有效例如overflow-y: hidden; 加在el-aside标签处不会生效 
+		而加载el-menu则有效
+		-->
+       <!-- 即说el-aside只是一个边框如box-shadow: 2px 0 6px rgb(0 21 41 / 35%);加了这个有阴影效果 -->
+        <el-menu 
+        :default-openeds='['1', '3']'
+        style='min-height: 100vh; overflow-x: hidden;overflow-y: hidden;'
+        background-color='rgb(48,65,86)'
+        text-color='#fff'
+        active-text-color='#ffd04b'
+        :collapse-transition='false'
+        :collapse='isCollapse'
+        >
+        <div style='height: 60px; line-height: 60px;text-align: center;'>
+            <img src='../../assets/logo.png' alt='' style='width: 20px; position: relative;top: 5px; margin-right: 3px;'>
+            <b style='color: white;' v-show='!isCollapse'>后台管理系统</b>
+        </div>
+        <el-submenu index='1'>
+            <template slot='title'>
+                <i class='el-icon-message'></i>
+                <span slot='title'>导航一</span>
+            </template>
+            <el-menu-item-group>
+            <template slot='title'>分组一</template>
+            <el-menu-item index='1-1'>选项1</el-menu-item>
+            <el-menu-item index='1-2'>选项2</el-menu-item>
+            </el-menu-item-group>
+            <el-menu-item-group title='分组2'>
+            <el-menu-item index='1-3'>选项3</el-menu-item>
+            </el-menu-item-group>
+            <el-submenu index='1-4'>
+            <template slot='title'>选项4</template>
+            <el-menu-item index='1-4-1'>选项4-1</el-menu-item>
+            </el-submenu>
+        </el-submenu>
+        <el-submenu index='2'>
+            <template slot='title'>
+                <i class='el-icon-menu'></i>
+                <span slot='title'>导航二</span>
+            </template>
+            <el-menu-item-group>
+            <template slot='title'>分组一</template>
+            <el-menu-item index='2-1'>选项1</el-menu-item>
+            <el-menu-item index='2-2'>选项2</el-menu-item>
+            </el-menu-item-group>
+            <el-menu-item-group title='分组2'>
+            <el-menu-item index='2-3'>选项3</el-menu-item>
+            </el-menu-item-group>
+            <el-submenu index='2-4'>
+            <template slot='title'>选项4</template>
+            <el-menu-item index='2-4-1'>选项4-1</el-menu-item>
+            </el-submenu>
+        </el-submenu>
+        <el-submenu index='3'>
+            <template slot='title'>
+                <i class='el-icon-setting'></i>
+                <span slot='title'>导航三</span>
+            </template>
+            <el-menu-item-group>
+            <template slot='title'>分组一</template>
+            <el-menu-item index='3-1'>选项1</el-menu-item>
+            <el-menu-item index='3-2'>选项2</el-menu-item>
+            </el-menu-item-group>
+            <el-menu-item-group title='分组2'>
+            <el-menu-item index='3-3'>选项3</el-menu-item>
+            </el-menu-item-group>
+            <el-submenu index='3-4'>
+            <template slot='title'>选项4</template>
+            <el-menu-item index='3-4-1'>选项4-1</el-menu-item>
+            </el-submenu>
+        </el-submenu>
+        </el-menu>
+        
+    </el-aside>
+        </el-scrollbar>
+    
+    
+    <el-container>
+        <el-header style='font-size: 12px; border-bottom:1px solid #ccc;display: flex;'>
+            <div style='flex: 1; font-size: 18px;'>
+                <span :class='collapseBtnClass' style='cursor: pointer;' @click='collapse'></span>
+            </div>
+            <!-- cursor: pointer;:鼠标悬浮变小手 -->
+        <el-dropdown style='width: 70px; cursor: pointer;'>
+            <span>王小虎</span>
+            <i class='el-icon-arrow-down' style='margin-left: 5px'></i>
+            <el-dropdown-menu slot='dropdown'>
+            <el-dropdown-item>查看个人信息</el-dropdown-item>
+            <el-dropdown-item>退出</el-dropdown-item>
+            </el-dropdown-menu>
+        </el-dropdown>
+       
+        </el-header>
+        
+        <el-scrollbar wrap-style='overflow-x:hidden;'>
+            <el-main style='padding-top: 10px ;scrollbar-width: thin;'>
+            <div class='button-collapse'>
+                <div style='margin: 10px 0;'>
+                <el-input style='width: 200px;' placeholder='请输入名称' suffix-icon='el-icon-search'></el-input>
+                <el-button style='margin-left: 5px;' type='primary'>搜索</el-button>
+                </div>
+
+                <div style='margin: 10px 0;'>
+                    <el-button type='primary' size='small'>新增<i class='el-icon-circle-plus-outline'></i></el-button>
+                    <el-button type='danger' size='small'>批量删除<i class='el-icon-remove-outline'></i></el-button>
+                    <el-button type='primary' size='small'>导入<i class='el-icon-bottom'></i></el-button>
+                    <el-button type='primary' size='small'>导出<i class='el-icon-top'></i></el-button>
+                </div>          
+            </div>
+            
+            <div class='select-table'>
+                <el-table :data='tableData' border>
+                    <el-table-column prop='date' label='日期' width='140'>
+                    </el-table-column>
+                    <el-table-column prop='name' label='姓名' width='120'>
+                    </el-table-column>
+                    <el-table-column prop='address' label='地址'>
+                    </el-table-column>
+                    <el-table-column label='操作'>
+                        <template slot-scope='scope'>
+                            <el-button type='warning' @click='handleWaring(scope)' size='small'>编辑<i class='el-icon-edit'></i></el-button>
+                            <el-button type='danger' @click='handleDelete(scope)' size='small'>删除<i class='el-icon-remove-outline'></i></el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <div style='padding: 10px 0;'>
+                    <el-pagination
+                    :page-sizes='[5, 10, 15, 20]'
+                    :page-size='100'
+                    layout='total, sizes, prev, pager, next, jumper'
+                    :total='400'>
+                    </el-pagination>
+                </div>
+            </div>
+        
+        </el-main>
+       </el-scrollbar>
+        
+    </el-container>
+    </el-container>
+  </div>
+</template>
+
+<script>
+export default {
+    data() {
+      const item = {
+        date: '2016-05-02',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      };
+      return {
+        tableData: Array(20).fill(item),
+        isCollapse:false,
+        sideWidth:200,
+        collapseBtnClass:'el-icon-s-fold'
+      }
+    },
+    methods:{
+        collapse(){//点击收缩
+            // alert('触发');
+            this.isCollapse = !this.isCollapse;
+            if(this.isCollapse){
+                this.sideWidth = 64;
+                this.collapseBtnClass = 'el-icon-s-unfold';
+            }else{
+                this.sideWidth = 200;
+                this.collapseBtnClass = 'el-icon-s-fold';
+            }
+        }
+    }
+}
+</script>
+
+<style>
+    .el-header {
+        background-color: #B3C0D1;
+        color: #333;
+        line-height: 60px;
+    }
+    
+    .el-aside {
+        color: #333;
+        /* background-color: #021936; */此处设置背景颜色不会生效
+    }
+    .button-collapse{//背景阴影
+        width: 100%;
+        background: #fff;
+        border-radius: 6px;
+        margin-top: 10px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+    }
+    .select-table{//背景阴影
+        width: 100%;
+        background: #fff;
+        border-radius: 6px;
+        margin-top: 10px;
+        /* padding-top: 5px; */
+        padding-bottom: 13px;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+    }
+</style>
+~~~
+
+### 效果
+
+![效果图](https://github.com/leyuan123/leyuan123.github.io/assets/126044735/2f4c9f47-f083-4dfd-8b9f-ce667f75c6c8)
+
+### 解释
+
+#### Template部分
+
+- `<el-container style='height: 100vh;'>`: 使用 Element UI 的容器组件，设置高度为全屏。">
+<meta property="og:title" content="(side) + (header + main)">
+<meta property="og:description" content="### side + (header + main)
+
+基于vue2 + ElementUI
+
+完整代码
+
+~~~vue
+<template>
+  <div>
+    <el-container style='height: 100vh;'>
+        
+        <el-scrollbar wrap-style='overflow-x:hidden;'><!--滚动条-->
+        <!-- width='200px' 固定-->
+        <!-- :width='sideWidth + 'px''绑定变量 -->
+        <!-- box-shadow: 2px 0 6px rgb(0 21 41 / 35%);:侧边栏阴影效果 -->
+        <el-aside :width='sideWidth + 'px'' style='box-shadow: 2px 0 6px rgb(0 21 41 / 35%);'>
+        
+        <!-- active-text-color='#ffd04b':导航栏点击高亮 -->
+        <!-- overflow-x: hidden;: 解决导航栏左侧溢出导致参差不齐 -->
+        <!-- background-color='rgb(48,65,86)':侧边栏颜色 -->
+        <!-- :collapse-transition='false':关闭侧边栏自带的动画 -->
+        <!-- :collapse='isCollapse':折叠属性 -->
+        <!-- 属性要加在el-menu才有效例如overflow-y: hidden; 加在el-aside标签处不会生效 
+		而加载el-menu则有效
+		-->
+       <!-- 即说el-aside只是一个边框如box-shadow: 2px 0 6px rgb(0 21 41 / 35%);加了这个有阴影效果 -->
+        <el-menu 
+        :default-openeds='['1', '3']'
+        style='min-height: 100vh; overflow-x: hidden;overflow-y: hidden;'
+        background-color='rgb(48,65,86)'
+        text-color='#fff'
+        active-text-color='#ffd04b'
+        :collapse-transition='false'
+        :collapse='isCollapse'
+        >
+        <div style='height: 60px; line-height: 60px;text-align: center;'>
+            <img src='../../assets/logo.png' alt='' style='width: 20px; position: relative;top: 5px; margin-right: 3px;'>
+            <b style='color: white;' v-show='!isCollapse'>后台管理系统</b>
+        </div>
+        <el-submenu index='1'>
+            <template slot='title'>
+                <i class='el-icon-message'></i>
+                <span slot='title'>导航一</span>
+            </template>
+            <el-menu-item-group>
+            <template slot='title'>分组一</template>
+            <el-menu-item index='1-1'>选项1</el-menu-item>
+            <el-menu-item index='1-2'>选项2</el-menu-item>
+            </el-menu-item-group>
+            <el-menu-item-group title='分组2'>
+            <el-menu-item index='1-3'>选项3</el-menu-item>
+            </el-menu-item-group>
+            <el-submenu index='1-4'>
+            <template slot='title'>选项4</template>
+            <el-menu-item index='1-4-1'>选项4-1</el-menu-item>
+            </el-submenu>
+        </el-submenu>
+        <el-submenu index='2'>
+            <template slot='title'>
+                <i class='el-icon-menu'></i>
+                <span slot='title'>导航二</span>
+            </template>
+            <el-menu-item-group>
+            <template slot='title'>分组一</template>
+            <el-menu-item index='2-1'>选项1</el-menu-item>
+            <el-menu-item index='2-2'>选项2</el-menu-item>
+            </el-menu-item-group>
+            <el-menu-item-group title='分组2'>
+            <el-menu-item index='2-3'>选项3</el-menu-item>
+            </el-menu-item-group>
+            <el-submenu index='2-4'>
+            <template slot='title'>选项4</template>
+            <el-menu-item index='2-4-1'>选项4-1</el-menu-item>
+            </el-submenu>
+        </el-submenu>
+        <el-submenu index='3'>
+            <template slot='title'>
+                <i class='el-icon-setting'></i>
+                <span slot='title'>导航三</span>
+            </template>
+            <el-menu-item-group>
+            <template slot='title'>分组一</template>
+            <el-menu-item index='3-1'>选项1</el-menu-item>
+            <el-menu-item index='3-2'>选项2</el-menu-item>
+            </el-menu-item-group>
+            <el-menu-item-group title='分组2'>
+            <el-menu-item index='3-3'>选项3</el-menu-item>
+            </el-menu-item-group>
+            <el-submenu index='3-4'>
+            <template slot='title'>选项4</template>
+            <el-menu-item index='3-4-1'>选项4-1</el-menu-item>
+            </el-submenu>
+        </el-submenu>
+        </el-menu>
+        
+    </el-aside>
+        </el-scrollbar>
+    
+    
+    <el-container>
+        <el-header style='font-size: 12px; border-bottom:1px solid #ccc;display: flex;'>
+            <div style='flex: 1; font-size: 18px;'>
+                <span :class='collapseBtnClass' style='cursor: pointer;' @click='collapse'></span>
+            </div>
+            <!-- cursor: pointer;:鼠标悬浮变小手 -->
+        <el-dropdown style='width: 70px; cursor: pointer;'>
+            <span>王小虎</span>
+            <i class='el-icon-arrow-down' style='margin-left: 5px'></i>
+            <el-dropdown-menu slot='dropdown'>
+            <el-dropdown-item>查看个人信息</el-dropdown-item>
+            <el-dropdown-item>退出</el-dropdown-item>
+            </el-dropdown-menu>
+        </el-dropdown>
+       
+        </el-header>
+        
+        <el-scrollbar wrap-style='overflow-x:hidden;'>
+            <el-main style='padding-top: 10px ;scrollbar-width: thin;'>
+            <div class='button-collapse'>
+                <div style='margin: 10px 0;'>
+                <el-input style='width: 200px;' placeholder='请输入名称' suffix-icon='el-icon-search'></el-input>
+                <el-button style='margin-left: 5px;' type='primary'>搜索</el-button>
+                </div>
+
+                <div style='margin: 10px 0;'>
+                    <el-button type='primary' size='small'>新增<i class='el-icon-circle-plus-outline'></i></el-button>
+                    <el-button type='danger' size='small'>批量删除<i class='el-icon-remove-outline'></i></el-button>
+                    <el-button type='primary' size='small'>导入<i class='el-icon-bottom'></i></el-button>
+                    <el-button type='primary' size='small'>导出<i class='el-icon-top'></i></el-button>
+                </div>          
+            </div>
+            
+            <div class='select-table'>
+                <el-table :data='tableData' border>
+                    <el-table-column prop='date' label='日期' width='140'>
+                    </el-table-column>
+                    <el-table-column prop='name' label='姓名' width='120'>
+                    </el-table-column>
+                    <el-table-column prop='address' label='地址'>
+                    </el-table-column>
+                    <el-table-column label='操作'>
+                        <template slot-scope='scope'>
+                            <el-button type='warning' @click='handleWaring(scope)' size='small'>编辑<i class='el-icon-edit'></i></el-button>
+                            <el-button type='danger' @click='handleDelete(scope)' size='small'>删除<i class='el-icon-remove-outline'></i></el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <div style='padding: 10px 0;'>
+                    <el-pagination
+                    :page-sizes='[5, 10, 15, 20]'
+                    :page-size='100'
+                    layout='total, sizes, prev, pager, next, jumper'
+                    :total='400'>
+                    </el-pagination>
+                </div>
+            </div>
+        
+        </el-main>
+       </el-scrollbar>
+        
+    </el-container>
+    </el-container>
+  </div>
+</template>
+
+<script>
+export default {
+    data() {
+      const item = {
+        date: '2016-05-02',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      };
+      return {
+        tableData: Array(20).fill(item),
+        isCollapse:false,
+        sideWidth:200,
+        collapseBtnClass:'el-icon-s-fold'
+      }
+    },
+    methods:{
+        collapse(){//点击收缩
+            // alert('触发');
+            this.isCollapse = !this.isCollapse;
+            if(this.isCollapse){
+                this.sideWidth = 64;
+                this.collapseBtnClass = 'el-icon-s-unfold';
+            }else{
+                this.sideWidth = 200;
+                this.collapseBtnClass = 'el-icon-s-fold';
+            }
+        }
+    }
+}
+</script>
+
+<style>
+    .el-header {
+        background-color: #B3C0D1;
+        color: #333;
+        line-height: 60px;
+    }
+    
+    .el-aside {
+        color: #333;
+        /* background-color: #021936; */此处设置背景颜色不会生效
+    }
+    .button-collapse{//背景阴影
+        width: 100%;
+        background: #fff;
+        border-radius: 6px;
+        margin-top: 10px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+    }
+    .select-table{//背景阴影
+        width: 100%;
+        background: #fff;
+        border-radius: 6px;
+        margin-top: 10px;
+        /* padding-top: 5px; */
+        padding-bottom: 13px;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+    }
+</style>
+~~~
+
+### 效果
+
+![效果图](https://github.com/leyuan123/leyuan123.github.io/assets/126044735/2f4c9f47-f083-4dfd-8b9f-ce667f75c6c8)
+
+### 解释
+
+#### Template部分
+
+- `<el-container style='height: 100vh;'>`: 使用 Element UI 的容器组件，设置高度为全屏。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://leyuan123.github.io/post/%28side%29%20%2B%20%28header%20%2B%20main%29.html">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/126044735?v=4">
+<title>(side) + (header + main)</title>
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+</style>
+
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">(side) + (header + main)</h1>
+<div class="title-right">
+    <a href="https://leyuan123.github.io" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/leyuan123/leyuan123.github.io/issues/8" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><h3>side + (header + main)</h3>
+<p>基于vue2 + ElementUI</p>
+<p>完整代码</p>
+<div class="highlight highlight-text-html-vue"><pre class="notranslate">&lt;<span class="pl-ent">template</span>&gt;
+  &lt;<span class="pl-ent">div</span>&gt;
+    &lt;<span class="pl-ent">el-container</span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>height: 100vh;<span class="pl-pds">"</span></span>&gt;
+        
+        &lt;<span class="pl-ent">el-scrollbar</span> <span class="pl-e">wrap-style</span>=<span class="pl-s"><span class="pl-pds">"</span>overflow-x:hidden;<span class="pl-pds">"</span></span>&gt;<span class="pl-c"><span class="pl-c">&lt;!--</span>滚动条<span class="pl-c">--&gt;</span></span>
+        <span class="pl-c"><span class="pl-c">&lt;!--</span> width="200px" 固定<span class="pl-c">--&gt;</span></span>
+        <span class="pl-c"><span class="pl-c">&lt;!--</span> :width="sideWidth + 'px'"绑定变量 <span class="pl-c">--&gt;</span></span>
+        <span class="pl-c"><span class="pl-c">&lt;!--</span> box-shadow: 2px 0 6px rgb(0 21 41 / 35%);:侧边栏阴影效果 <span class="pl-c">--&gt;</span></span>
+        &lt;<span class="pl-ent">el-aside</span> :<span class="pl-e">width</span>=<span class="pl-s1"><span class="pl-pds">"</span>sideWidth <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">'</span>px<span class="pl-pds">'</span></span><span class="pl-pds">"</span></span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>box-shadow: 2px 0 6px rgb(0 21 41 / 35%);<span class="pl-pds">"</span></span>&gt;
+        
+        <span class="pl-c"><span class="pl-c">&lt;!--</span> active-text-color="#ffd04b":导航栏点击高亮 <span class="pl-c">--&gt;</span></span>
+        <span class="pl-c"><span class="pl-c">&lt;!--</span> overflow-x: hidden;: 解决导航栏左侧溢出导致参差不齐 <span class="pl-c">--&gt;</span></span>
+        <span class="pl-c"><span class="pl-c">&lt;!--</span> background-color="rgb(48,65,86)":侧边栏颜色 <span class="pl-c">--&gt;</span></span>
+        <span class="pl-c"><span class="pl-c">&lt;!--</span> :collapse-transition="false":关闭侧边栏自带的动画 <span class="pl-c">--&gt;</span></span>
+        <span class="pl-c"><span class="pl-c">&lt;!--</span> :collapse="isCollapse":折叠属性 <span class="pl-c">--&gt;</span></span>
+        <span class="pl-c"><span class="pl-c">&lt;!--</span> 属性要加在el-menu才有效例如overflow-y: hidden; 加在el-aside标签处不会生效 </span>
+<span class="pl-c">		而加载el-menu则有效</span>
+<span class="pl-c">		<span class="pl-c">--&gt;</span></span>
+       <span class="pl-c"><span class="pl-c">&lt;!--</span> 即说el-aside只是一个边框如box-shadow: 2px 0 6px rgb(0 21 41 / 35%);加了这个有阴影效果 <span class="pl-c">--&gt;</span></span>
+        &lt;<span class="pl-ent">el-menu</span> 
+        :<span class="pl-e">default-openeds</span>=<span class="pl-s1"><span class="pl-pds">"</span>[<span class="pl-s"><span class="pl-pds">'</span>1<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>3<span class="pl-pds">'</span></span>]<span class="pl-pds">"</span></span>
+        <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>min-height: 100vh; overflow-x: hidden;overflow-y: hidden;<span class="pl-pds">"</span></span>
+        <span class="pl-e">background-color</span>=<span class="pl-s"><span class="pl-pds">"</span>rgb(48,65,86)<span class="pl-pds">"</span></span>
+        <span class="pl-e">text-color</span>=<span class="pl-s"><span class="pl-pds">"</span>#fff<span class="pl-pds">"</span></span>
+        <span class="pl-e">active-text-color</span>=<span class="pl-s"><span class="pl-pds">"</span>#ffd04b<span class="pl-pds">"</span></span>
+        :<span class="pl-e">collapse-transition</span>=<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-c1">false</span><span class="pl-pds">"</span></span>
+        :<span class="pl-e">collapse</span>=<span class="pl-s1"><span class="pl-pds">"</span>isCollapse<span class="pl-pds">"</span></span>
+        &gt;
+        &lt;<span class="pl-ent">div</span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>height: 60px; line-height: 60px;text-align: center;<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">img</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>../../assets/logo.png<span class="pl-pds">"</span></span> <span class="pl-e">alt</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>width: 20px; position: relative;top: 5px; margin-right: 3px;<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">b</span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>color: white;<span class="pl-pds">"</span></span> <span class="pl-e">v-show</span>=<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-k">!</span>isCollapse<span class="pl-pds">"</span></span>&gt;后台管理系统&lt;/<span class="pl-ent">b</span>&gt;
+        &lt;/<span class="pl-ent">div</span>&gt;
+        &lt;<span class="pl-ent">el-submenu</span> <span class="pl-e">index</span>=<span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">template</span> <span class="pl-e">slot</span>=<span class="pl-s"><span class="pl-pds">"</span>title<span class="pl-pds">"</span></span>&gt;
+                &lt;<span class="pl-ent">i</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>el-icon-message<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">i</span>&gt;
+                &lt;<span class="pl-ent">span</span> <span class="pl-e">slot</span>=<span class="pl-s"><span class="pl-pds">"</span>title<span class="pl-pds">"</span></span>&gt;导航一&lt;/<span class="pl-ent">span</span>&gt;
+            &lt;/<span class="pl-ent">template</span>&gt;
+            &lt;<span class="pl-ent">el-menu-item-group</span>&gt;
+            &lt;<span class="pl-ent">template</span> <span class="pl-e">slot</span>=<span class="pl-s"><span class="pl-pds">"</span>title<span class="pl-pds">"</span></span>&gt;分组一&lt;/<span class="pl-ent">template</span>&gt;
+            &lt;<span class="pl-ent">el-menu-item</span> <span class="pl-e">index</span>=<span class="pl-s"><span class="pl-pds">"</span>1-1<span class="pl-pds">"</span></span>&gt;选项1&lt;/<span class="pl-ent">el-menu-item</span>&gt;
+            &lt;<span class="pl-ent">el-menu-item</span> <span class="pl-e">index</span>=<span class="pl-s"><span class="pl-pds">"</span>1-2<span class="pl-pds">"</span></span>&gt;选项2&lt;/<span class="pl-ent">el-menu-item</span>&gt;
+            &lt;/<span class="pl-ent">el-menu-item-group</span>&gt;
+            &lt;<span class="pl-ent">el-menu-item-group</span> <span class="pl-e">title</span>=<span class="pl-s"><span class="pl-pds">"</span>分组2<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">el-menu-item</span> <span class="pl-e">index</span>=<span class="pl-s"><span class="pl-pds">"</span>1-3<span class="pl-pds">"</span></span>&gt;选项3&lt;/<span class="pl-ent">el-menu-item</span>&gt;
+            &lt;/<span class="pl-ent">el-menu-item-group</span>&gt;
+            &lt;<span class="pl-ent">el-submenu</span> <span class="pl-e">index</span>=<span class="pl-s"><span class="pl-pds">"</span>1-4<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">template</span> <span class="pl-e">slot</span>=<span class="pl-s"><span class="pl-pds">"</span>title<span class="pl-pds">"</span></span>&gt;选项4&lt;/<span class="pl-ent">template</span>&gt;
+            &lt;<span class="pl-ent">el-menu-item</span> <span class="pl-e">index</span>=<span class="pl-s"><span class="pl-pds">"</span>1-4-1<span class="pl-pds">"</span></span>&gt;选项4-1&lt;/<span class="pl-ent">el-menu-item</span>&gt;
+            &lt;/<span class="pl-ent">el-submenu</span>&gt;
+        &lt;/<span class="pl-ent">el-submenu</span>&gt;
+        &lt;<span class="pl-ent">el-submenu</span> <span class="pl-e">index</span>=<span class="pl-s"><span class="pl-pds">"</span>2<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">template</span> <span class="pl-e">slot</span>=<span class="pl-s"><span class="pl-pds">"</span>title<span class="pl-pds">"</span></span>&gt;
+                &lt;<span class="pl-ent">i</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>el-icon-menu<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">i</span>&gt;
+                &lt;<span class="pl-ent">span</span> <span class="pl-e">slot</span>=<span class="pl-s"><span class="pl-pds">"</span>title<span class="pl-pds">"</span></span>&gt;导航二&lt;/<span class="pl-ent">span</span>&gt;
+            &lt;/<span class="pl-ent">template</span>&gt;
+            &lt;<span class="pl-ent">el-menu-item-group</span>&gt;
+            &lt;<span class="pl-ent">template</span> <span class="pl-e">slot</span>=<span class="pl-s"><span class="pl-pds">"</span>title<span class="pl-pds">"</span></span>&gt;分组一&lt;/<span class="pl-ent">template</span>&gt;
+            &lt;<span class="pl-ent">el-menu-item</span> <span class="pl-e">index</span>=<span class="pl-s"><span class="pl-pds">"</span>2-1<span class="pl-pds">"</span></span>&gt;选项1&lt;/<span class="pl-ent">el-menu-item</span>&gt;
+            &lt;<span class="pl-ent">el-menu-item</span> <span class="pl-e">index</span>=<span class="pl-s"><span class="pl-pds">"</span>2-2<span class="pl-pds">"</span></span>&gt;选项2&lt;/<span class="pl-ent">el-menu-item</span>&gt;
+            &lt;/<span class="pl-ent">el-menu-item-group</span>&gt;
+            &lt;<span class="pl-ent">el-menu-item-group</span> <span class="pl-e">title</span>=<span class="pl-s"><span class="pl-pds">"</span>分组2<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">el-menu-item</span> <span class="pl-e">index</span>=<span class="pl-s"><span class="pl-pds">"</span>2-3<span class="pl-pds">"</span></span>&gt;选项3&lt;/<span class="pl-ent">el-menu-item</span>&gt;
+            &lt;/<span class="pl-ent">el-menu-item-group</span>&gt;
+            &lt;<span class="pl-ent">el-submenu</span> <span class="pl-e">index</span>=<span class="pl-s"><span class="pl-pds">"</span>2-4<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">template</span> <span class="pl-e">slot</span>=<span class="pl-s"><span class="pl-pds">"</span>title<span class="pl-pds">"</span></span>&gt;选项4&lt;/<span class="pl-ent">template</span>&gt;
+            &lt;<span class="pl-ent">el-menu-item</span> <span class="pl-e">index</span>=<span class="pl-s"><span class="pl-pds">"</span>2-4-1<span class="pl-pds">"</span></span>&gt;选项4-1&lt;/<span class="pl-ent">el-menu-item</span>&gt;
+            &lt;/<span class="pl-ent">el-submenu</span>&gt;
+        &lt;/<span class="pl-ent">el-submenu</span>&gt;
+        &lt;<span class="pl-ent">el-submenu</span> <span class="pl-e">index</span>=<span class="pl-s"><span class="pl-pds">"</span>3<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">template</span> <span class="pl-e">slot</span>=<span class="pl-s"><span class="pl-pds">"</span>title<span class="pl-pds">"</span></span>&gt;
+                &lt;<span class="pl-ent">i</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>el-icon-setting<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">i</span>&gt;
+                &lt;<span class="pl-ent">span</span> <span class="pl-e">slot</span>=<span class="pl-s"><span class="pl-pds">"</span>title<span class="pl-pds">"</span></span>&gt;导航三&lt;/<span class="pl-ent">span</span>&gt;
+            &lt;/<span class="pl-ent">template</span>&gt;
+            &lt;<span class="pl-ent">el-menu-item-group</span>&gt;
+            &lt;<span class="pl-ent">template</span> <span class="pl-e">slot</span>=<span class="pl-s"><span class="pl-pds">"</span>title<span class="pl-pds">"</span></span>&gt;分组一&lt;/<span class="pl-ent">template</span>&gt;
+            &lt;<span class="pl-ent">el-menu-item</span> <span class="pl-e">index</span>=<span class="pl-s"><span class="pl-pds">"</span>3-1<span class="pl-pds">"</span></span>&gt;选项1&lt;/<span class="pl-ent">el-menu-item</span>&gt;
+            &lt;<span class="pl-ent">el-menu-item</span> <span class="pl-e">index</span>=<span class="pl-s"><span class="pl-pds">"</span>3-2<span class="pl-pds">"</span></span>&gt;选项2&lt;/<span class="pl-ent">el-menu-item</span>&gt;
+            &lt;/<span class="pl-ent">el-menu-item-group</span>&gt;
+            &lt;<span class="pl-ent">el-menu-item-group</span> <span class="pl-e">title</span>=<span class="pl-s"><span class="pl-pds">"</span>分组2<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">el-menu-item</span> <span class="pl-e">index</span>=<span class="pl-s"><span class="pl-pds">"</span>3-3<span class="pl-pds">"</span></span>&gt;选项3&lt;/<span class="pl-ent">el-menu-item</span>&gt;
+            &lt;/<span class="pl-ent">el-menu-item-group</span>&gt;
+            &lt;<span class="pl-ent">el-submenu</span> <span class="pl-e">index</span>=<span class="pl-s"><span class="pl-pds">"</span>3-4<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">template</span> <span class="pl-e">slot</span>=<span class="pl-s"><span class="pl-pds">"</span>title<span class="pl-pds">"</span></span>&gt;选项4&lt;/<span class="pl-ent">template</span>&gt;
+            &lt;<span class="pl-ent">el-menu-item</span> <span class="pl-e">index</span>=<span class="pl-s"><span class="pl-pds">"</span>3-4-1<span class="pl-pds">"</span></span>&gt;选项4-1&lt;/<span class="pl-ent">el-menu-item</span>&gt;
+            &lt;/<span class="pl-ent">el-submenu</span>&gt;
+        &lt;/<span class="pl-ent">el-submenu</span>&gt;
+        &lt;/<span class="pl-ent">el-menu</span>&gt;
+        
+    &lt;/<span class="pl-ent">el-aside</span>&gt;
+        &lt;/<span class="pl-ent">el-scrollbar</span>&gt;
+    
+    
+    &lt;<span class="pl-ent">el-container</span>&gt;
+        &lt;<span class="pl-ent">el-header</span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>font-size: 12px; border-bottom:1px solid #ccc;display: flex;<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">div</span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>flex: 1; font-size: 18px;<span class="pl-pds">"</span></span>&gt;
+                &lt;<span class="pl-ent">span</span> :<span class="pl-e">class</span>=<span class="pl-s1"><span class="pl-pds">"</span>collapseBtnClass<span class="pl-pds">"</span></span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>cursor: pointer;<span class="pl-pds">"</span></span> @<span class="pl-e">click</span>=<span class="pl-s1"><span class="pl-pds">"</span>collapse<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">span</span>&gt;
+            &lt;/<span class="pl-ent">div</span>&gt;
+            <span class="pl-c"><span class="pl-c">&lt;!--</span> cursor: pointer;:鼠标悬浮变小手 <span class="pl-c">--&gt;</span></span>
+        &lt;<span class="pl-ent">el-dropdown</span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>width: 70px; cursor: pointer;<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">span</span>&gt;王小虎&lt;/<span class="pl-ent">span</span>&gt;
+            &lt;<span class="pl-ent">i</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>el-icon-arrow-down<span class="pl-pds">"</span></span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>margin-left: 5px<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">i</span>&gt;
+            &lt;<span class="pl-ent">el-dropdown-menu</span> <span class="pl-e">slot</span>=<span class="pl-s"><span class="pl-pds">"</span>dropdown<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">el-dropdown-item</span>&gt;查看个人信息&lt;/<span class="pl-ent">el-dropdown-item</span>&gt;
+            &lt;<span class="pl-ent">el-dropdown-item</span>&gt;退出&lt;/<span class="pl-ent">el-dropdown-item</span>&gt;
+            &lt;/<span class="pl-ent">el-dropdown-menu</span>&gt;
+        &lt;/<span class="pl-ent">el-dropdown</span>&gt;
+       
+        &lt;/<span class="pl-ent">el-header</span>&gt;
+        
+        &lt;<span class="pl-ent">el-scrollbar</span> <span class="pl-e">wrap-style</span>=<span class="pl-s"><span class="pl-pds">"</span>overflow-x:hidden;<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">el-main</span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>padding-top: 10px ;scrollbar-width: thin;<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>button-collapse<span class="pl-pds">"</span></span>&gt;
+                &lt;<span class="pl-ent">div</span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>margin: 10px 0;<span class="pl-pds">"</span></span>&gt;
+                &lt;<span class="pl-ent">el-input</span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>width: 200px;<span class="pl-pds">"</span></span> <span class="pl-e">placeholder</span>=<span class="pl-s"><span class="pl-pds">"</span>请输入名称<span class="pl-pds">"</span></span> <span class="pl-e">suffix-icon</span>=<span class="pl-s"><span class="pl-pds">"</span>el-icon-search<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">el-input</span>&gt;
+                &lt;<span class="pl-ent">el-button</span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>margin-left: 5px;<span class="pl-pds">"</span></span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>primary<span class="pl-pds">"</span></span>&gt;搜索&lt;/<span class="pl-ent">el-button</span>&gt;
+                &lt;/<span class="pl-ent">div</span>&gt;
+
+                &lt;<span class="pl-ent">div</span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>margin: 10px 0;<span class="pl-pds">"</span></span>&gt;
+                    &lt;<span class="pl-ent">el-button</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>primary<span class="pl-pds">"</span></span> <span class="pl-e">size</span>=<span class="pl-s"><span class="pl-pds">"</span>small<span class="pl-pds">"</span></span>&gt;新增&lt;<span class="pl-ent">i</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>el-icon-circle-plus-outline<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">i</span>&gt;&lt;/<span class="pl-ent">el-button</span>&gt;
+                    &lt;<span class="pl-ent">el-button</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>danger<span class="pl-pds">"</span></span> <span class="pl-e">size</span>=<span class="pl-s"><span class="pl-pds">"</span>small<span class="pl-pds">"</span></span>&gt;批量删除&lt;<span class="pl-ent">i</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>el-icon-remove-outline<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">i</span>&gt;&lt;/<span class="pl-ent">el-button</span>&gt;
+                    &lt;<span class="pl-ent">el-button</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>primary<span class="pl-pds">"</span></span> <span class="pl-e">size</span>=<span class="pl-s"><span class="pl-pds">"</span>small<span class="pl-pds">"</span></span>&gt;导入&lt;<span class="pl-ent">i</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>el-icon-bottom<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">i</span>&gt;&lt;/<span class="pl-ent">el-button</span>&gt;
+                    &lt;<span class="pl-ent">el-button</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>primary<span class="pl-pds">"</span></span> <span class="pl-e">size</span>=<span class="pl-s"><span class="pl-pds">"</span>small<span class="pl-pds">"</span></span>&gt;导出&lt;<span class="pl-ent">i</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>el-icon-top<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">i</span>&gt;&lt;/<span class="pl-ent">el-button</span>&gt;
+                &lt;/<span class="pl-ent">div</span>&gt;          
+            &lt;/<span class="pl-ent">div</span>&gt;
+            
+            &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>select-table<span class="pl-pds">"</span></span>&gt;
+                &lt;<span class="pl-ent">el-table</span> :<span class="pl-e">data</span>=<span class="pl-s1"><span class="pl-pds">"</span>tableData<span class="pl-pds">"</span></span> <span class="pl-e">border</span>&gt;
+                    &lt;<span class="pl-ent">el-table-column</span> <span class="pl-e">prop</span>=<span class="pl-s"><span class="pl-pds">"</span>date<span class="pl-pds">"</span></span> <span class="pl-e">label</span>=<span class="pl-s"><span class="pl-pds">"</span>日期<span class="pl-pds">"</span></span> <span class="pl-e">width</span>=<span class="pl-s"><span class="pl-pds">"</span>140<span class="pl-pds">"</span></span>&gt;
+                    &lt;/<span class="pl-ent">el-table-column</span>&gt;
+                    &lt;<span class="pl-ent">el-table-column</span> <span class="pl-e">prop</span>=<span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span> <span class="pl-e">label</span>=<span class="pl-s"><span class="pl-pds">"</span>姓名<span class="pl-pds">"</span></span> <span class="pl-e">width</span>=<span class="pl-s"><span class="pl-pds">"</span>120<span class="pl-pds">"</span></span>&gt;
+                    &lt;/<span class="pl-ent">el-table-column</span>&gt;
+                    &lt;<span class="pl-ent">el-table-column</span> <span class="pl-e">prop</span>=<span class="pl-s"><span class="pl-pds">"</span>address<span class="pl-pds">"</span></span> <span class="pl-e">label</span>=<span class="pl-s"><span class="pl-pds">"</span>地址<span class="pl-pds">"</span></span>&gt;
+                    &lt;/<span class="pl-ent">el-table-column</span>&gt;
+                    &lt;<span class="pl-ent">el-table-column</span> <span class="pl-e">label</span>=<span class="pl-s"><span class="pl-pds">"</span>操作<span class="pl-pds">"</span></span>&gt;
+                        &lt;<span class="pl-ent">template</span> <span class="pl-e">slot-scope</span>=<span class="pl-s"><span class="pl-pds">"</span>scope<span class="pl-pds">"</span></span>&gt;
+                            &lt;<span class="pl-ent">el-button</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>warning<span class="pl-pds">"</span></span> @<span class="pl-e">click</span>=<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-en">handleWaring</span>(scope)<span class="pl-pds">"</span></span> <span class="pl-e">size</span>=<span class="pl-s"><span class="pl-pds">"</span>small<span class="pl-pds">"</span></span>&gt;编辑&lt;<span class="pl-ent">i</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>el-icon-edit<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">i</span>&gt;&lt;/<span class="pl-ent">el-button</span>&gt;
+                            &lt;<span class="pl-ent">el-button</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>danger<span class="pl-pds">"</span></span> @<span class="pl-e">click</span>=<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-en">handleDelete</span>(scope)<span class="pl-pds">"</span></span> <span class="pl-e">size</span>=<span class="pl-s"><span class="pl-pds">"</span>small<span class="pl-pds">"</span></span>&gt;删除&lt;<span class="pl-ent">i</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>el-icon-remove-outline<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">i</span>&gt;&lt;/<span class="pl-ent">el-button</span>&gt;
+                        &lt;/<span class="pl-ent">template</span>&gt;
+                    &lt;/<span class="pl-ent">el-table-column</span>&gt;
+                &lt;/<span class="pl-ent">el-table</span>&gt;
+
+                &lt;<span class="pl-ent">div</span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>padding: 10px 0;<span class="pl-pds">"</span></span>&gt;
+                    &lt;<span class="pl-ent">el-pagination</span>
+                    :<span class="pl-e">page-sizes</span>=<span class="pl-s1"><span class="pl-pds">"</span>[<span class="pl-c1">5</span>, <span class="pl-c1">10</span>, <span class="pl-c1">15</span>, <span class="pl-c1">20</span>]<span class="pl-pds">"</span></span>
+                    :<span class="pl-e">page-size</span>=<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-c1">100</span><span class="pl-pds">"</span></span>
+                    <span class="pl-e">layout</span>=<span class="pl-s"><span class="pl-pds">"</span>total, sizes, prev, pager, next, jumper<span class="pl-pds">"</span></span>
+                    :<span class="pl-e">total</span>=<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-c1">400</span><span class="pl-pds">"</span></span>&gt;
+                    &lt;/<span class="pl-ent">el-pagination</span>&gt;
+                &lt;/<span class="pl-ent">div</span>&gt;
+            &lt;/<span class="pl-ent">div</span>&gt;
+        
+        &lt;/<span class="pl-ent">el-main</span>&gt;
+       &lt;/<span class="pl-ent">el-scrollbar</span>&gt;
+        
+    &lt;/<span class="pl-ent">el-container</span>&gt;
+    &lt;/<span class="pl-ent">el-container</span>&gt;
+  &lt;/<span class="pl-ent">div</span>&gt;
+&lt;/<span class="pl-ent">template</span>&gt;
+
+<span class="pl-s1">&lt;<span class="pl-ent">script</span>&gt;</span>
+<span class="pl-s1"><span class="pl-k">export</span> <span class="pl-c1">default</span> {</span>
+<span class="pl-s1">    <span class="pl-en">data</span>() {</span>
+<span class="pl-s1">      <span class="pl-k">const</span> <span class="pl-c1">item</span> <span class="pl-k">=</span> {</span>
+<span class="pl-s1">        date<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>2016-05-02<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>王小虎<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        address<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>上海市普陀区金沙江路 1518 弄<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">      };</span>
+<span class="pl-s1">      <span class="pl-k">return</span> {</span>
+<span class="pl-s1">        tableData<span class="pl-k">:</span> <span class="pl-c1">Array</span>(<span class="pl-c1">20</span>).<span class="pl-en">fill</span>(item),</span>
+<span class="pl-s1">        isCollapse<span class="pl-k">:</span><span class="pl-c1">false</span>,</span>
+<span class="pl-s1">        sideWidth<span class="pl-k">:</span><span class="pl-c1">200</span>,</span>
+<span class="pl-s1">        collapseBtnClass<span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">'</span>el-icon-s-fold<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">      }</span>
+<span class="pl-s1">    },</span>
+<span class="pl-s1">    methods<span class="pl-k">:</span>{</span>
+<span class="pl-s1">        <span class="pl-en">collapse</span>(){<span class="pl-c"><span class="pl-c">//</span>点击收缩</span></span>
+<span class="pl-s1">            <span class="pl-c"><span class="pl-c">//</span> alert("触发");</span></span>
+<span class="pl-s1">            <span class="pl-c1">this</span>.<span class="pl-smi">isCollapse</span> <span class="pl-k">=</span> <span class="pl-k">!</span><span class="pl-c1">this</span>.<span class="pl-smi">isCollapse</span>;</span>
+<span class="pl-s1">            <span class="pl-k">if</span>(<span class="pl-c1">this</span>.<span class="pl-smi">isCollapse</span>){</span>
+<span class="pl-s1">                <span class="pl-c1">this</span>.<span class="pl-smi">sideWidth</span> <span class="pl-k">=</span> <span class="pl-c1">64</span>;</span>
+<span class="pl-s1">                <span class="pl-c1">this</span>.<span class="pl-smi">collapseBtnClass</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>el-icon-s-unfold<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1">            }<span class="pl-k">else</span>{</span>
+<span class="pl-s1">                <span class="pl-c1">this</span>.<span class="pl-smi">sideWidth</span> <span class="pl-k">=</span> <span class="pl-c1">200</span>;</span>
+<span class="pl-s1">                <span class="pl-c1">this</span>.<span class="pl-smi">collapseBtnClass</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>el-icon-s-fold<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1">            }</span>
+<span class="pl-s1">        }</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1">}</span>
+<span class="pl-s1">&lt;/<span class="pl-ent">script</span>&gt;</span>
+
+<span class="pl-s1">&lt;<span class="pl-ent">style</span>&gt;</span>
+<span class="pl-s1">    <span class="pl-e">.el-header</span> {</span>
+<span class="pl-s1">        <span class="pl-c1"><span class="pl-c1">background-color</span></span>: <span class="pl-c1">#B3C0D1</span>;</span>
+<span class="pl-s1">        <span class="pl-c1"><span class="pl-c1">color</span></span>: <span class="pl-c1">#333</span>;</span>
+<span class="pl-s1">        <span class="pl-c1"><span class="pl-c1">line-height</span></span>: <span class="pl-c1">60<span class="pl-k">px</span></span>;</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1">    </span>
+<span class="pl-s1">    <span class="pl-e">.el-aside</span> {</span>
+<span class="pl-s1">        <span class="pl-c1"><span class="pl-c1">color</span></span>: <span class="pl-c1">#333</span>;</span>
+<span class="pl-s1">        <span class="pl-c"><span class="pl-c">/*</span> background-color: #021936; <span class="pl-c">*/</span></span>此处设置背景颜色不会生效</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1">    <span class="pl-e">.button-collapse</span>{//背景阴影</span>
+<span class="pl-s1">        <span class="pl-c1"><span class="pl-c1">width</span></span>: <span class="pl-c1">100<span class="pl-k">%</span></span>;</span>
+<span class="pl-s1">        <span class="pl-c1"><span class="pl-c1">background</span></span>: <span class="pl-c1">#fff</span>;</span>
+<span class="pl-s1">        <span class="pl-c1"><span class="pl-c1">border-radius</span></span>: <span class="pl-c1">6<span class="pl-k">px</span></span>;</span>
+<span class="pl-s1">        <span class="pl-c1"><span class="pl-c1">margin-top</span></span>: <span class="pl-c1">10<span class="pl-k">px</span></span>;</span>
+<span class="pl-s1">        <span class="pl-c1"><span class="pl-c1">padding-top</span></span>: <span class="pl-c1">2<span class="pl-k">px</span></span>;</span>
+<span class="pl-s1">        <span class="pl-c1"><span class="pl-c1">padding-bottom</span></span>: <span class="pl-c1">2<span class="pl-k">px</span></span>;</span>
+<span class="pl-s1">        <span class="pl-c1"><span class="pl-c1">box-shadow</span></span>: <span class="pl-c1">1<span class="pl-k">px</span></span> <span class="pl-c1">1<span class="pl-k">px</span></span> <span class="pl-c1">3<span class="pl-k">px</span></span> <span class="pl-c1">rgba</span>(<span class="pl-c1">0</span>, <span class="pl-c1">0</span>, <span class="pl-c1">0</span>, <span class="pl-c1">.2</span>);</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1">    <span class="pl-e">.select-table</span>{//背景阴影</span>
+<span class="pl-s1">        <span class="pl-c1"><span class="pl-c1">width</span></span>: <span class="pl-c1">100<span class="pl-k">%</span></span>;</span>
+<span class="pl-s1">        <span class="pl-c1"><span class="pl-c1">background</span></span>: <span class="pl-c1">#fff</span>;</span>
+<span class="pl-s1">        <span class="pl-c1"><span class="pl-c1">border-radius</span></span>: <span class="pl-c1">6<span class="pl-k">px</span></span>;</span>
+<span class="pl-s1">        <span class="pl-c1"><span class="pl-c1">margin-top</span></span>: <span class="pl-c1">10<span class="pl-k">px</span></span>;</span>
+<span class="pl-s1">        <span class="pl-c"><span class="pl-c">/*</span> padding-top: 5px; <span class="pl-c">*/</span></span></span>
+<span class="pl-s1">        <span class="pl-c1"><span class="pl-c1">padding-bottom</span></span>: <span class="pl-c1">13<span class="pl-k">px</span></span>;</span>
+<span class="pl-s1">        <span class="pl-c1"><span class="pl-c1">box-shadow</span></span>: <span class="pl-c1">1<span class="pl-k">px</span></span> <span class="pl-c1">1<span class="pl-k">px</span></span> <span class="pl-c1">3<span class="pl-k">px</span></span> <span class="pl-c1">rgba</span>(<span class="pl-c1">0</span>, <span class="pl-c1">0</span>, <span class="pl-c1">0</span>, <span class="pl-c1">.2</span>);</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1">&lt;/<span class="pl-ent">style</span>&gt;</span></pre></div>
+<h3>效果</h3>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/leyuan123/leyuan123.github.io/assets/126044735/2f4c9f47-f083-4dfd-8b9f-ce667f75c6c8"><img src="https://github.com/leyuan123/leyuan123.github.io/assets/126044735/2f4c9f47-f083-4dfd-8b9f-ce667f75c6c8" alt="效果图" style="max-width: 100%;"></a></p>
+<h3>解释</h3>
+<h4>Template部分</h4>
+<ul>
+<li><code class="notranslate">&lt;el-container style="height: 100vh;"&gt;</code>: 使用 Element UI 的容器组件，设置高度为全屏。 <code class="notranslate">100vh</code> 代表视口高度即占满全屏</li>
+<li><code class="notranslate">&lt;el-scrollbar wrap-style="overflow-x:hidden;"&gt;</code>: 使用滚动条组件并隐藏水平滚动条。</li>
+<li><code class="notranslate">&lt;el-aside :width="sideWidth + 'px'" style="box-shadow: 2px 0 6px rgb(0 21 41 / 35%);"&gt;</code>: 侧边栏组件，宽度绑定 <code class="notranslate">sideWidth</code> 变量，设置阴影效果。</li>
+<li><code class="notranslate">&lt;el-menu&gt;</code>: 导航菜单组件，设置默认打开项、背景颜色、文字颜色、高亮颜色、折叠动画和折叠状态。</li>
+<li><code class="notranslate">&lt;el-submenu&gt;</code>: 菜单子项组件，用于分组菜单项。</li>
+<li><code class="notranslate">&lt;el-header&gt;</code>: 页头组件，包含收缩按钮和用户下拉菜单。</li>
+<li><code class="notranslate">&lt;el-scrollbar wrap-style="overflow-x:hidden;"&gt;</code>: 内容区滚动条，隐藏水平滚动条。</li>
+<li><code class="notranslate">&lt;el-main&gt;</code>: 主内容区，包含搜索框、操作按钮和表格组件。</li>
+<li><code class="notranslate">&lt;el-table&gt;</code>: 表格组件，展示数据。</li>
+<li><code class="notranslate">&lt;el-pagination&gt;</code>: 分页组件，设置分页属性。</li>
+</ul>
+<h4>Script部分</h4>
+<ul>
+<li>
+<p><code class="notranslate">data()</code>: 定义组件的初始数据。</p>
+<ul>
+<li><code class="notranslate">tableData</code>: 表格数据，包含日期、姓名和地址。</li>
+<li><code class="notranslate">isCollapse</code>: 控制侧边栏是否折叠。</li>
+<li><code class="notranslate">sideWidth</code>: 侧边栏宽度。</li>
+<li><code class="notranslate">collapseBtnClass</code>: 折叠按钮的类名。</li>
+</ul>
+</li>
+<li>
+<p><code class="notranslate">methods</code>: 定义组件的方法。</p>
+<ul>
+<li><code class="notranslate">collapse()</code>: 控制侧边栏的展开和折叠。</li>
+</ul>
+</li>
+</ul>
+<h4>Style部分</h4>
+<ul>
+<li><code class="notranslate">.el-header</code>: 设置页头的样式，包括背景颜色、文字颜色和行高。</li>
+<li><code class="notranslate">.el-aside</code>: 设置侧边栏的样式，注释掉背景颜色设置。</li>
+<li><code class="notranslate">.button-collapse</code>: 设置操作按钮区的样式，包括宽度、背景色、边框半径、外边距、内边距和阴影。</li>
+<li><code class="notranslate">.select-table</code>: 设置表格区的样式，包括宽度、背景色、边框半径、外边距、内边距和阴影。</li>
+</ul></div>
+<div style="font-size:small;margin-top:8px;float:right;"></div>
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+</div>
+    <div id="footer">Copyright © <span id="year"></span><a href="https://leyuan123.github.io"> 个人博客 </a>
+<p>
+<span id="runday"></span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a>
+</p>
+
+<script>
+if("06/22/2024"!=""){
+    var now=new Date();
+    var startSite=new Date("06/22/2024");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("year").innerHTML=now.getFullYear();
+    if(""!=""){document.getElementById("runday").innerHTML=" • "+"网站运行"+diffDay+"天"+" • ";}
+    else{document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";}
+}
+</script>
+</div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n\n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","leyuan123/leyuan123.github.io");
+    script.setAttribute("issue-term","title");
+    
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
+    else{script.setAttribute("theme","preferred-color-scheme");}
+    
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
+}
+
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
+            console.log("utterances Load OK");
+        }
+    }
+}
+</script>
+
+
+</html>
